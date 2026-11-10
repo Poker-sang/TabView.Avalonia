@@ -22,7 +22,7 @@ Add the Style to your App.axaml:
     ...
     <Application.Styles>
         ...
-        <tabView:TabsViewTheme />
+        <tabView:TabsViewFluentTheme />
     </Application.Styles>
 <Application />
 ```

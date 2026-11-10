@@ -1,0 +1,17 @@
+<Styles
+    x:Class="TabView.Avalonia.TabsViewFluent2Theme"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="Resources.axaml" />
+                <ResourceInclude Source="Buttons.axaml" />
+                <ResourceInclude Source="TabsViewItem.axaml" />
+                <ResourceInclude Source="TabsView.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+
+</Styles>

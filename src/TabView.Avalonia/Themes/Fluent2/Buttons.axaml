@@ -1,0 +1,96 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TabView.Avalonia">
+
+    <ControlTheme x:Key="TabsViewFluent2DragThumbTheme" TargetType="local:LeftPressedThumb">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}" />
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <!-- A dedicated theme keeps the application Button theme from overriding tab states. -->
+    <ControlTheme x:Key="TabsViewFluent2ButtonTheme" TargetType="Button">
+        <Setter Property="Width" Value="{DynamicResource TabsViewFluent2ButtonWidth}" />
+        <Setter Property="Height" Value="{DynamicResource TabsViewFluent2ButtonHeight}" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource TabsViewFluent2ButtonForeground}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource TabsViewFluent2ButtonCornerRadius}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ContentPresenter
+                    Name="PART_ContentPresenter"
+                    Padding="{TemplateBinding Padding}"
+                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Content="{TemplateBinding Content}"
+                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <ContentPresenter.Transitions>
+                        <Transitions>
+                            <BrushTransition Property="Background" Duration="{DynamicResource TabsViewFluent2StateDuration}" />
+                        </Transitions>
+                    </ContentPresenter.Transitions>
+                </ContentPresenter>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TabsViewFluent2ButtonBackgroundPointerOver}" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TabsViewFluent2ButtonBackgroundPressed}" />
+            <Setter Property="Foreground" Value="{DynamicResource TabsViewFluent2ButtonForegroundPressed}" />
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource TabsViewFluent2ItemForegroundDisabled}" />
+        </Style>
+        <Style Selector="^:focus-visible /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="BorderBrush" Value="{DynamicResource TabsViewFluent2FocusBrush}" />
+            <Setter Property="BorderThickness" Value="2" />
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme x:Key="TabsViewFluent2AddButtonTheme" TargetType="Button" BasedOn="{StaticResource TabsViewFluent2ButtonTheme}">
+        <Setter Property="Margin" Value="3,0,0,3" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="AutomationProperties.Name" Value="Add new tab" />
+        <Setter Property="ToolTip.Tip" Value="Add new tab" />
+        <Setter Property="ContentTemplate">
+            <DataTemplate>
+                <PathIcon
+                    Width="{DynamicResource TabsViewFluent2ButtonGlyphSize}"
+                    Height="{DynamicResource TabsViewFluent2ButtonGlyphSize}"
+                    Data="M5,0 H6 V5 H11 V6 H6 V11 H5 V6 H0 V5 H5 Z" />
+            </DataTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="TabsViewFluent2CloseButtonTheme" TargetType="Button" BasedOn="{StaticResource TabsViewFluent2ButtonTheme}">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Margin" Value="4,0,0,0" />
+        <Setter Property="AutomationProperties.Name" Value="Close tab" />
+        <Setter Property="ToolTip.Tip" Value="Close tab" />
+        <Setter Property="ContentTemplate">
+            <DataTemplate>
+                <PathIcon
+                    Width="{DynamicResource TabsViewFluent2CloseButtonGlyphSize}"
+                    Height="{DynamicResource TabsViewFluent2CloseButtonGlyphSize}"
+                    Data="M0.707,0 L5,4.293 L9.293,0 L10,0.707 L5.707,5 L10,9.293 L9.293,10 L5,5.707 L0.707,10 L0,9.293 L4.293,5 L0,0.707 Z" />
+            </DataTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

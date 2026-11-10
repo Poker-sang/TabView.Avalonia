@@ -141,7 +141,8 @@ public sealed class TopPanel : Panel
         parts.TabsControl.Arrange(new Rect(x, 0, widths.TabsControl, tabsHeight));
         x += widths.TabsControl;
 
-        ArrangeCenterVertical(parts.AddTabButton, x, tabsHeight);
+        // Let the theme apply alignment and margins within the full strip height.
+        parts.AddTabButton.Arrange(new Rect(x, 0, widths.AddTabButton, tabsHeight));
         x += widths.AddTabButton;
 
         var availableSpaceWidth =
@@ -175,23 +176,13 @@ public sealed class TopPanel : Panel
         parts.TabsControl.Arrange(new Rect(x, 0, availableTabsWidth, tabsHeight));
         x += availableTabsWidth;
 
-        ArrangeCenterVertical(parts.AddTabButton, x, tabsHeight);
+        parts.AddTabButton.Arrange(new Rect(x, 0, widths.AddTabButton, tabsHeight));
         x += widths.AddTabButton;
 
         parts.MiddleDragWindowThumb.Arrange(new Rect(x, 0, 0, tabsHeight));
         parts.RightHeaderContent.Arrange(new Rect(x, 0, widths.RightHeaderContent, tabsHeight));
         x += widths.RightHeaderContent;
         parts.RightDragWindowThumb.Arrange(new Rect(x, 0, widths.RightDragWindowThumb, tabsHeight));
-    }
-
-    private static void ArrangeCenterVertical(Layoutable control, double x, double fullHeight)
-    {
-        var width = control.DesiredSize.Width;
-        var height = control.DesiredSize.Height;
-
-        var y = (fullHeight - height) / 2;
-
-        control.Arrange(new Rect(x, y, width, height));
     }
 
     private readonly struct PartsStruct

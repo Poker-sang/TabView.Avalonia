@@ -38,6 +38,7 @@ public class TabsPanel(TabsView tabsControl) : Panel
 
     protected override Size ArrangeOverride(Size finalSize)
     {
+        UpdateTabSeparators();
         var draggedItem = GetDragItem();
             
         if (_dragItem is not null && draggedItem is null)
@@ -56,6 +57,19 @@ public class TabsPanel(TabsView tabsControl) : Panel
     }
         
     #endregion
+
+    internal void UpdateTabSeparators()
+    {
+        // WinUI hides both sides of a hovered/selected tab, and the trailing divider.
+        for (var i = 0; i < Children.Count; i++)
+        {
+            if (Children[i] is not TabsViewItem item)
+                continue;
+            var next = i + 1 < Children.Count ? Children[i + 1] as TabsViewItem : null;
+            item.SetSeparatorHidden(next is null || item.IsSelected || item.IsPointerOver || item.IsDragging ||
+                next.IsSelected || next.IsPointerOver || next.IsDragging);
+        }
+    }
 
     private Size MeasureImpl(Size availableSize)
     {

@@ -1,8 +1,11 @@
 using System.Diagnostics;
+using Avalonia.Controls.Metadata;
+using TabView.Avalonia.Primitives;
 
 namespace TabView.Avalonia;
 
 [DebuggerDisplay($"{nameof(TabsViewItem)}({{Header}})")]
+[PseudoClasses(":separator-hidden", ":pressed")]
 public class TabsViewItem : TabItem
 {
     #region Private Fields
@@ -126,7 +129,13 @@ public class TabsViewItem : TabItem
         if (change.Property == IsSelectedProperty)
             if (change.GetNewValue<bool>())
                 ZIndex = ZIndexes.Selected;
+
+        if (change.Property == IsSelectedProperty || change.Property == IsPointerOverProperty ||
+            change.Property == IsDraggingProperty)
+            (Parent as TabsPanel)?.UpdateTabSeparators();
     }
+
+    internal void SetSeparatorHidden(bool hidden) => PseudoClasses.Set(":separator-hidden", hidden);
 
     public override string ToString()
     {
@@ -151,6 +160,7 @@ public class TabsViewItem : TabItem
 
     private void ThumbOnDragStarted(object? sender, VectorEventArgs args)
     {
+        PseudoClasses.Set(":pressed", true);
         RaiseEvent(new DragTabDragStartedEventArgs(DragStarted, this, args));
     }
     
@@ -181,6 +191,7 @@ public class TabsViewItem : TabItem
 
     private void ThumbOnDragCompleted(object? sender, VectorEventArgs e)
     {
+        PseudoClasses.Set(":pressed", false);
         var args = new DragTabDragCompletedEventArgs(DragCompleted, this, e);
         RaiseEvent(args);
     }

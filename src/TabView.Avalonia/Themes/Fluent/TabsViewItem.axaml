@@ -59,11 +59,17 @@
                                         Margin="0,0,16,0"
                                         ColumnDefinitions="Auto,*"
                                         ColumnSpacing="{StaticResource TabItemHeaderSpacing}">
-                                        <ContentPresenter
+                                        <Viewbox
                                             Grid.Column="0"
+                                            Width="16"
+                                            Height="16"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
-                                            Content="{TemplateBinding Icon}" />
+                                            IsVisible="{TemplateBinding Icon, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                            <ContentPresenter
+                                                Content="{TemplateBinding Icon}"
+                                                ContentTemplate="{TemplateBinding IconTemplate}" />
+                                        </Viewbox>
                                         <ContentPresenter
                                             Name="PART_ContentPresenter"
                                             Grid.Column="1"

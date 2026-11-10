@@ -1,5 +1,6 @@
 <Project>
 	<PropertyGroup>
-		<AvaloniaVersion>12.0.5</AvaloniaVersion>
+		<!-- Pinned nightly containing AvaloniaUI/Avalonia#21771 (Fluent 2). -->
+		<AvaloniaVersion>12.2.999-cibuild0101180-alpha</AvaloniaVersion>
 	</PropertyGroup>
 </Project>

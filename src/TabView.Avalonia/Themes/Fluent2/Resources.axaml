@@ -1,0 +1,63 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- WinUI 3 TabView_themeresources.xaml dimensions and token mappings.
+         Resolve the Fluent 2 tokens per variant so palette changes remain live. -->
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+            <StaticResource x:Key="TabsViewFluent2StripBackground" ResourceKey="SolidBackgroundFillColorBaseBrush" />
+            <StaticResource x:Key="TabsViewFluent2ContentBackground" ResourceKey="SolidBackgroundFillColorTertiaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemBackground" ResourceKey="LayerOnMicaBaseAltFillColorTransparentBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemBackgroundPointerOver" ResourceKey="LayerOnMicaBaseAltFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemBackgroundPressed" ResourceKey="LayerOnMicaBaseAltFillColorDefaultBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemForeground" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemForegroundSelected" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemForegroundPressed" ResourceKey="TextFillColorTertiaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+            <StaticResource x:Key="TabsViewFluent2SeparatorBrush" ResourceKey="DividerStrokeColorDefaultBrush" />
+            <StaticResource x:Key="TabsViewFluent2BorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+            <StaticResource x:Key="TabsViewFluent2ButtonBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ButtonBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ButtonForeground" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2FocusBrush" ResourceKey="FocusStrokeColorOuterBrush" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+            <StaticResource x:Key="TabsViewFluent2StripBackground" ResourceKey="SolidBackgroundFillColorBaseBrush" />
+            <StaticResource x:Key="TabsViewFluent2ContentBackground" ResourceKey="SolidBackgroundFillColorTertiaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemBackground" ResourceKey="LayerOnMicaBaseAltFillColorTransparentBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemBackgroundPointerOver" ResourceKey="LayerOnMicaBaseAltFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemBackgroundPressed" ResourceKey="LayerOnMicaBaseAltFillColorDefaultBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemForeground" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemForegroundSelected" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemForegroundPressed" ResourceKey="TextFillColorTertiaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+            <StaticResource x:Key="TabsViewFluent2SeparatorBrush" ResourceKey="DividerStrokeColorDefaultBrush" />
+            <StaticResource x:Key="TabsViewFluent2BorderBrush" ResourceKey="CardStrokeColorDefaultBrush" />
+            <StaticResource x:Key="TabsViewFluent2ButtonBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ButtonBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ButtonForeground" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2ButtonForegroundPressed" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2FocusBrush" ResourceKey="FocusStrokeColorOuterBrush" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
+    <Thickness x:Key="TabsViewFluent2HeaderPadding">0,8,0,0</Thickness>
+    <Thickness x:Key="TabsViewFluent2ItemPadding">8,3,4,3</Thickness>
+    <CornerRadius x:Key="TabsViewFluent2ItemCornerRadius">8,8,0,0</CornerRadius>
+    <CornerRadius x:Key="TabsViewFluent2ButtonCornerRadius">4</CornerRadius>
+    <x:Double x:Key="TabsViewFluent2ItemHeight">32</x:Double>
+    <x:Double x:Key="TabsViewFluent2ItemWidth">240</x:Double>
+    <x:Double x:Key="TabsViewFluent2ItemFontSize">12</x:Double>
+    <x:Double x:Key="TabsViewFluent2IconSize">16</x:Double>
+    <Thickness x:Key="TabsViewFluent2IconMargin">0,0,10,0</Thickness>
+    <x:Double x:Key="TabsViewFluent2ButtonWidth">32</x:Double>
+    <x:Double x:Key="TabsViewFluent2ButtonHeight">24</x:Double>
+    <!-- An odd ink size lets a centered one-DIP plus use whole-pixel edges at 100%.
+         The diagonal close mark needs a smaller optical size at the same stroke weight. -->
+    <x:Double x:Key="TabsViewFluent2ButtonGlyphSize">11</x:Double>
+    <x:Double x:Key="TabsViewFluent2CloseButtonGlyphSize">10</x:Double>
+    <x:Double x:Key="TabsViewFluent2CornerSize">4</x:Double>
+    <x:TimeSpan x:Key="TabsViewFluent2StateDuration">0:0:0.083</x:TimeSpan>
+</ResourceDictionary>
