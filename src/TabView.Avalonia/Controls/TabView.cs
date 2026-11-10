@@ -316,6 +316,7 @@ public class TabsView : TabbedPage
         else if (change.Property == TabItemWidthProperty)
         {
             _tabsPanel.ItemWidth = TabItemWidth;
+            _tabsPanel.InvalidateMeasure();
         }
         else if (change.Property == LeftHeaderContentDraggableProperty)
         {

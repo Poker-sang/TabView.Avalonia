@@ -4,7 +4,8 @@ using System.Globalization;
 
 namespace TabView.Avalonia;
 
-internal class ShowDefaultCloseButtonConverter : IMultiValueConverter
+/// <summary>Combines the close button setting and fixed tab index for external tab themes.</summary>
+public class ShowDefaultCloseButtonConverter : IMultiValueConverter
 {
     public static readonly ShowDefaultCloseButtonConverter Instance = new();
 
@@ -15,7 +16,6 @@ internal class ShowDefaultCloseButtonConverter : IMultiValueConverter
         // [2] is item LogicalIndex
         if (values is not [bool showDefaultCloseButton, int fixedHeaderCount, int logicalIndex])
             return false;
-            
         return showDefaultCloseButton && logicalIndex >= fixedHeaderCount;
     }
 }

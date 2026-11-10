@@ -1,7 +1,8 @@
 <ResourceDictionary
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:TabView.Avalonia">
+    xmlns:local="using:TabView.Avalonia"
+    xmlns:primitives="using:TabView.Avalonia.Primitives">
 
     <ControlTheme x:Key="{x:Type local:TabsViewItem}" TargetType="local:TabsViewItem">
         <Setter Property="FontSize" Value="{DynamicResource TabsViewFluent2ItemFontSize}" />
@@ -11,75 +12,82 @@
         <Setter Property="Padding" Value="{DynamicResource TabsViewFluent2ItemPadding}" />
         <Setter Property="Height" Value="{DynamicResource TabsViewFluent2ItemHeight}" />
         <Setter Property="CornerRadius" Value="{DynamicResource TabsViewFluent2ItemCornerRadius}" />
+        <!-- The selected tab's concave feet extend beyond its layout bounds. -->
+        <Setter Property="ClipToBounds" Value="False" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid>
-                    <!-- Feet extend outside the tab's measured width, as in WinUI.
-                         The 1px bottom overlap keeps the content join sealed at fractional DPI. -->
+                    <!-- One outline supplies the fill and curved border, including the feet. -->
                     <local:TabsViewItemChrome
                         Name="PART_SelectedBackground"
-                        Margin="-4,0,-4,-1"
                         Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{TemplateBinding CornerRadius}"
                         FootRadius="{DynamicResource TabsViewFluent2CornerSize}"
                         IsHitTestVisible="False"
                         IsVisible="False" />
                     <Border
                         Name="PART_LayoutRoot"
+                        ClipToBounds="True"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{TemplateBinding CornerRadius}">
                         <Panel>
-                            <Grid Margin="{TemplateBinding Padding}" ColumnDefinitions="Auto,*,Auto">
-                                <Viewbox
-                                    Name="PART_IconBox"
-                                    Width="{DynamicResource TabsViewFluent2IconSize}"
-                                    Height="{DynamicResource TabsViewFluent2IconSize}"
-                                    Margin="{DynamicResource TabsViewFluent2IconMargin}"
-                                    VerticalAlignment="Center"
-                                    Stretch="Uniform"
-                                    IsVisible="{TemplateBinding Icon, Converter={x:Static ObjectConverters.IsNotNull}}">
+                            <primitives:TabHeaderPanel
+                                Padding="{TemplateBinding Padding}"
+                                IsActive="{TemplateBinding IsSelected}"
+                                TabWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                                CompactWidthThreshold="{DynamicResource TabsViewCompactWidthThreshold}"
+                                MinimumCloseButtonWidth="{DynamicResource TabsViewFluent2CloseButtonGlyphSize}">
+                                <primitives:TabHeaderPanel.AllowCloseButton>
+                                    <MultiBinding Converter="{x:Static local:ShowDefaultCloseButtonConverter.Instance}">
+                                        <Binding Path="$parent[local:DragTabControl].Owner.ShowDefaultCloseButton" />
+                                        <Binding Path="$parent[local:DragTabControl].Owner.FixedHeaderCount" />
+                                        <Binding Path="LogicalIndex" RelativeSource="{RelativeSource TemplatedParent}" />
+                                    </MultiBinding>
+                                </primitives:TabHeaderPanel.AllowCloseButton>
+                                <Grid Name="PART_HeaderContent" ColumnDefinitions="Auto,*">
+                                    <Viewbox
+                                        Name="PART_IconBox"
+                                        Width="{DynamicResource TabsViewFluent2IconSize}"
+                                        Height="{DynamicResource TabsViewFluent2IconSize}"
+                                        Margin="{DynamicResource TabsViewFluent2IconMargin}"
+                                        VerticalAlignment="Center"
+                                        Stretch="Uniform"
+                                        IsVisible="{TemplateBinding Icon, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                        <ContentPresenter
+                                            Name="PART_IconPresenter"
+                                            Content="{TemplateBinding Icon}"
+                                            ContentTemplate="{TemplateBinding IconTemplate}"
+                                            Foreground="{TemplateBinding Foreground}" />
+                                    </Viewbox>
                                     <ContentPresenter
-                                        Name="PART_IconPresenter"
-                                        Content="{TemplateBinding Icon}"
-                                        ContentTemplate="{TemplateBinding IconTemplate}"
-                                        Foreground="{TemplateBinding Foreground}" />
-                                </Viewbox>
-                                <ContentPresenter
-                                    Name="PART_ContentPresenter"
-                                    Grid.Column="1"
-                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                    Content="{TemplateBinding Header}"
-                                    ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                    FontFamily="{TemplateBinding FontFamily}"
-                                    FontSize="{TemplateBinding FontSize}"
-                                    FontWeight="{TemplateBinding FontWeight}"
-                                    Foreground="{TemplateBinding Foreground}"
-                                    RecognizesAccessKey="False" />
+                                        Name="PART_ContentPresenter"
+                                        Grid.Column="1"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Content="{TemplateBinding Header}"
+                                        ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                        FontFamily="{TemplateBinding FontFamily}"
+                                        FontSize="{TemplateBinding FontSize}"
+                                        FontWeight="{TemplateBinding FontWeight}"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        RecognizesAccessKey="False" />
+                                </Grid>
                                 <!-- Above header content, below the close button: preserve drag hit testing. -->
                                 <local:LeftPressedThumb
                                     Name="PART_Thumb"
-                                    Grid.ColumnSpan="3"
                                     Theme="{StaticResource TabsViewFluent2DragThumbTheme}" />
                                 <Button
                                     Name="PART_CloseButton"
-                                    Grid.Column="2"
                                     Command="{Binding $parent[local:DragTabControl].Owner.CloseItemCommand}"
                                     CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}}"
-                                    Theme="{StaticResource TabsViewFluent2CloseButtonTheme}">
-                                    <Button.IsVisible>
-                                        <MultiBinding Converter="{x:Static local:ShowDefaultCloseButtonConverter.Instance}">
-                                            <Binding Path="$parent[local:DragTabControl].Owner.ShowDefaultCloseButton" />
-                                            <Binding Path="$parent[local:DragTabControl].Owner.FixedHeaderCount" />
-                                            <Binding Path="LogicalIndex" RelativeSource="{RelativeSource TemplatedParent}" />
-                                        </MultiBinding>
-                                    </Button.IsVisible>
-                                </Button>
-                            </Grid>
+                                    Theme="{StaticResource TabsViewFluent2CloseButtonTheme}" />
+                            </primitives:TabHeaderPanel>
                             <Border
                                 Name="PART_FocusRing"
                                 Margin="3"
@@ -127,6 +135,7 @@
         </Style>
         <Style Selector="^:selected /template/ Border#PART_LayoutRoot">
             <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
         </Style>
         <Style Selector="^[IsDragging=true]">
             <Setter Property="Background" Value="{DynamicResource TabsViewFluent2ContentBackground}" />

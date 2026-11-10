@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Avalonia.Controls.Metadata;
+using Avalonia.VisualTree;
 using TabView.Avalonia.Primitives;
 
 namespace TabView.Avalonia;
@@ -132,7 +133,7 @@ public class TabsViewItem : TabItem
 
         if (change.Property == IsSelectedProperty || change.Property == IsPointerOverProperty ||
             change.Property == IsDraggingProperty)
-            (Parent as TabsPanel)?.UpdateTabSeparators();
+            (this.GetVisualParent() as TabsPanel)?.UpdateTabSeparators();
     }
 
     internal void SetSeparatorHidden(bool hidden) => PseudoClasses.Set(":separator-hidden", hidden);

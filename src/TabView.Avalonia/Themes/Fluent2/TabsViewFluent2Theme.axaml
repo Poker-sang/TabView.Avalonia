@@ -6,6 +6,7 @@
     <Styles.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="../Shared/Resources.axaml" />
                 <ResourceInclude Source="Resources.axaml" />
                 <ResourceInclude Source="Buttons.axaml" />
                 <ResourceInclude Source="TabsViewItem.axaml" />
