@@ -1,0 +1,14 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:m3="https://github.com/Shirasagi0012/Material3Expressive.Avalonia">
+    <SolidColorBrush x:Key="DemoTextBrush" Color="{m3:Token {x:Static m3:MaterialTokens+Sys+Color.OnSurface}}" />
+    <SolidColorBrush x:Key="DemoSecondaryTextBrush" Color="{m3:Token {x:Static m3:MaterialTokens+Sys+Color.OnSurfaceVariant}}" />
+    <SolidColorBrush x:Key="DemoCardBrush" Color="{m3:Token {x:Static m3:MaterialTokens+Sys+Color.SurfaceContainerHighest}}" />
+    <SolidColorBrush x:Key="DemoCardBorderBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="DemoAccentBrush" Color="{m3:Token {x:Static m3:MaterialTokens+Sys+Color.Primary}}" />
+    <SolidColorBrush x:Key="DemoAccentBackgroundBrush" Color="{m3:Token {x:Static m3:MaterialTokens+Sys+Color.SecondaryContainer}}" />
+    <CornerRadius x:Key="DemoCardCornerRadius">24</CornerRadius>
+    <Thickness x:Key="DemoThemeControlsMargin">0,0,8,0</Thickness>
+    <x:Double x:Key="DemoThemeControlHeight">32</x:Double>
+    <Thickness x:Key="DemoHeaderIconMargin">16,0,12,0</Thickness>
+</ResourceDictionary>

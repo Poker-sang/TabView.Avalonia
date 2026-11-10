@@ -1,0 +1,24 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="DemoTextBrush" Color="#E4000000" />
+                    <SolidColorBrush x:Key="DemoSecondaryTextBrush" Color="#9E000000" />
+                    <SolidColorBrush x:Key="DemoCardBrush" Color="#B3FFFFFF" />
+                    <SolidColorBrush x:Key="DemoCardBorderBrush" Color="#0F000000" />
+                    <SolidColorBrush x:Key="DemoAccentBrush" Color="#005FB8" />
+                    <SolidColorBrush x:Key="DemoAccentBackgroundBrush" Color="#0C005FB8" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="DemoTextBrush" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="DemoSecondaryTextBrush" Color="#C5FFFFFF" />
+                    <SolidColorBrush x:Key="DemoCardBrush" Color="#0DFFFFFF" />
+                    <SolidColorBrush x:Key="DemoCardBorderBrush" Color="#19000000" />
+                    <SolidColorBrush x:Key="DemoAccentBrush" Color="#60CDFF" />
+                    <SolidColorBrush x:Key="DemoAccentBackgroundBrush" Color="#1560CDFF" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+    <CornerRadius x:Key="DemoCardCornerRadius">8</CornerRadius>
+    <Thickness x:Key="DemoThemeControlsMargin">0,0,8,4</Thickness>
+    <x:Double x:Key="DemoThemeControlHeight">28</x:Double>
+    <Thickness x:Key="DemoHeaderIconMargin">16,0,12,4</Thickness>
+</ResourceDictionary>

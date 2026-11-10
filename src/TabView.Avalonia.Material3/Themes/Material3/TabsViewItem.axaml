@@ -1,0 +1,131 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TabView.Avalonia"
+    xmlns:primitives="using:TabView.Avalonia.Primitives"
+    xmlns:m3="https://github.com/Shirasagi0012/Material3Expressive.Avalonia">
+    <ControlTheme x:Key="{x:Type local:TabsViewItem}" TargetType="local:TabsViewItem">
+        <Setter Property="Height" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.ItemHeight}}" />
+        <Setter Property="Padding" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.ItemPadding}}" />
+        <Setter Property="CornerRadius" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.ItemCornerRadius}}" />
+        <!-- Concave feet extend outside the item; the chrome clips its own state layer. -->
+        <Setter Property="ClipToBounds" Value="False" />
+        <Setter Property="FontFamily" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.LabelFont}}" />
+        <Setter Property="FontSize" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.LabelSize}}" />
+        <Setter Property="FontWeight" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.LabelWeight}}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.LabelColor}}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="m3:MaterialInteraction.IsInteractive" Value="True" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Panel Background="Transparent">
+                    <local:Material3TabBackground
+                        Name="PART_TabBackground"
+                        BodyInset="{m3:Token {x:Static local:TabsViewMaterial3Tokens.ItemInset}}"
+                        FootRadius="{m3:Token {x:Static local:TabsViewMaterial3Tokens.FootRadius}}"
+                        ContentOverlap="{m3:Token {x:Static local:TabsViewMaterial3Tokens.ContentOverlap}}"
+                        IsConnected="{TemplateBinding IsSelected}"
+                        IsHitTestVisible="False"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                        <!-- The Material layer fills the same clipped path as the background,
+                             including the selected tab's feet and its join to the content. -->
+                        <m3:MaterialSurface
+                            Name="PART_TabSurface"
+                            Background="Transparent"
+                            CornerRadius="0"
+                            IsHitTestVisible="False"
+                            StateLayerBrush="{TemplateBinding Foreground}"
+                            TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </local:Material3TabBackground>
+                    <primitives:TabHeaderPanel
+                        Name="PART_HeaderPanel"
+                        Margin="{m3:Token {x:Static local:TabsViewMaterial3Tokens.ItemInset}}"
+                        Padding="{TemplateBinding Padding}"
+                        ClipToBounds="True"
+                        IsActive="{TemplateBinding IsSelected}"
+                        TabWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}"
+                        MinimumCloseButtonWidth="{m3:Token {x:Static local:TabsViewMaterial3Tokens.CloseButtonMinimumWidth}}"
+                        CompactWidthThreshold="{m3:Token {x:Static local:TabsViewMaterial3Tokens.CloseButtonVisibilityThreshold}}">
+                        <primitives:TabHeaderPanel.AllowCloseButton>
+                            <MultiBinding Converter="{x:Static local:ShowDefaultCloseButtonConverter.Instance}">
+                                <Binding Path="$parent[local:DragTabControl].Owner.ShowDefaultCloseButton" />
+                                <Binding Path="$parent[local:DragTabControl].Owner.FixedHeaderCount" />
+                                <Binding Path="LogicalIndex" RelativeSource="{RelativeSource TemplatedParent}" />
+                            </MultiBinding>
+                        </primitives:TabHeaderPanel.AllowCloseButton>
+                        <Grid Name="PART_HeaderContent" ColumnDefinitions="Auto,*" ClipToBounds="True">
+                            <Viewbox
+                                Name="PART_IconBox"
+                                Width="{m3:Token {x:Static local:TabsViewMaterial3Tokens.IconSize}}"
+                                Height="{m3:Token {x:Static local:TabsViewMaterial3Tokens.IconSize}}"
+                                Margin="{m3:Token {x:Static local:TabsViewMaterial3Tokens.IconMargin}}"
+                                VerticalAlignment="Center"
+                                Stretch="Uniform"
+                                IsVisible="{TemplateBinding Icon, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                <ContentPresenter Name="PART_IconPresenter"
+                                    Content="{TemplateBinding Icon}"
+                                    ContentTemplate="{TemplateBinding IconTemplate}"
+                                    Foreground="{TemplateBinding Foreground}" />
+                            </Viewbox>
+                            <ContentPresenter Name="PART_ContentPresenter" Grid.Column="1"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                                FontWeight="{TemplateBinding FontWeight}" Foreground="{TemplateBinding Foreground}"
+                                RecognizesAccessKey="False" />
+                        </Grid>
+                        <local:LeftPressedThumb Name="PART_Thumb"
+                            Theme="{StaticResource TabsViewMaterial3DragThumbTheme}" />
+                        <Button Name="PART_CloseButton" HorizontalAlignment="Right" Margin="0"
+                            Command="{Binding $parent[local:DragTabControl].Owner.CloseItemCommand}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                            Theme="{StaticResource TabsViewMaterial3CloseButtonTheme}" />
+                    </primitives:TabHeaderPanel>
+                    <Border Name="PART_FocusRing" Margin="{m3:Token {x:Static local:TabsViewMaterial3Tokens.ItemInset}}"
+                        CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="2"
+                        BorderBrush="{m3:Token {x:Static m3:MaterialTokens+Sys+Color.Primary}}"
+                        IsHitTestVisible="False" IsVisible="False" />
+                    <Border Name="PART_Separator" Width="1" Margin="0,12"
+                        HorizontalAlignment="Right" CornerRadius="0.5" IsHitTestVisible="False"
+                        Background="{m3:Token {x:Static local:TabsViewMaterial3Tokens.SeparatorColor}}" />
+                </Panel>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter TextBlock">
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="TextWrapping" Value="NoWrap" />
+        </Style>
+        <Style Selector="^:pointerover:not(:selected)">
+            <Setter Property="Background" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.HoverColor}}" />
+            <Setter Property="Foreground" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.HoverLabelColor}}" />
+        </Style>
+        <Style Selector="^:selected">
+            <Setter Property="Background" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.SelectedColor}}" />
+            <Setter Property="Foreground" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.SelectedLabelColor}}" />
+        </Style>
+        <Style Selector="^:selected /template/ m3|MaterialSurface#PART_TabSurface">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^:selected /template/ Button#PART_CloseButton">
+            <Setter Property="Background" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.SelectedColor}}" />
+        </Style>
+        <Style Selector="^:focus-visible /template/ Border#PART_FocusRing">
+            <Setter Property="IsVisible" Value="True" />
+        </Style>
+        <Style Selector="^:separator-hidden /template/ Border#PART_Separator">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+        <Style Selector="^[IsDragging=true]">
+            <Setter Property="Background" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.SelectedColor}}" />
+        </Style>
+        <Style Selector="^[IsDragging=true] /template/ :is(m3|MaterialSurface)#PART_TabSurface">
+            <Setter Property="ShadowElevation" Value="3" />
+        </Style>
+        <Style Selector="^:disabled"><Setter Property="Opacity" Value="{m3:Token {x:Static m3:MaterialTokens+Sys+State.DisabledContentOpacity}}" /></Style>
+    </ControlTheme>
+</ResourceDictionary>

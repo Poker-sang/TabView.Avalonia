@@ -1,0 +1,81 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TabView.Avalonia"
+    xmlns:m3="https://github.com/Shirasagi0012/Material3Expressive.Avalonia">
+    <ControlTheme x:Key="TabsViewMaterial3DragThumbTheme" TargetType="local:LeftPressedThumb">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Template">
+            <ControlTemplate><Border Background="Transparent" /></ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="TabsViewMaterial3ButtonTheme" TargetType="Button">
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.LabelColor}}" />
+        <Setter Property="CornerRadius" Value="{m3:Token {x:Static m3:MaterialTokens+Sys+Shape.Full}}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="m3:MaterialInteraction.IsInteractive" Value="True" />
+        <Setter Property="m3:MaterialInteraction.FocusFeedback" Value="InsetRing" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <m3:MaterialSurface
+                    Name="PART_Surface"
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    StateLayerBrush="{TemplateBinding Foreground}"
+                    TextElement.Foreground="{TemplateBinding Foreground}">
+                    <ContentPresenter
+                        Name="PART_ContentPresenter"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}" />
+                </m3:MaterialSurface>
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^:disabled"><Setter Property="Opacity" Value="{m3:Token {x:Static m3:MaterialTokens+Sys+State.DisabledContentOpacity}}" /></Style>
+    </ControlTheme>
+
+    <ControlTheme x:Key="TabsViewMaterial3AddButtonTheme" TargetType="Button" BasedOn="{StaticResource TabsViewMaterial3ButtonTheme}">
+        <Setter Property="Width" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.AddButtonSize}}" />
+        <Setter Property="Height" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.AddButtonSize}}" />
+        <Setter Property="Margin" Value="4,4,8,4" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="AutomationProperties.Name" Value="Add new tab" />
+        <Setter Property="ToolTip.Tip" Value="Add new tab" />
+        <Setter Property="ContentTemplate">
+            <DataTemplate><m3:MaterialSymbol Symbol="Add" Width="20" Height="20" /></DataTemplate>
+        </Setter>
+        <Style Selector="^:pointerover">
+            <Setter Property="Background" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.AddHoverColor}}" />
+            <Setter Property="Foreground" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.AddHoverLabelColor}}" />
+        </Style>
+    </ControlTheme>
+
+    <ControlTheme x:Key="TabsViewMaterial3CloseButtonTheme" TargetType="Button" BasedOn="{StaticResource TabsViewMaterial3ButtonTheme}">
+        <Setter Property="Width" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.CloseButtonSize}}" />
+        <Setter Property="Height" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.CloseButtonSize}}" />
+        <Setter Property="Margin" Value="4,0,0,0" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{Binding $parent[local:TabsViewItem].Foreground}" />
+        <Setter Property="AutomationProperties.Name" Value="Close tab" />
+        <Setter Property="ToolTip.Tip" Value="Close tab" />
+        <Setter Property="ContentTemplate">
+            <DataTemplate>
+                <Viewbox MaxWidth="16" MaxHeight="16" Stretch="Uniform" StretchDirection="DownOnly">
+                    <m3:MaterialSymbol Symbol="Close" Width="16" Height="16" />
+                </Viewbox>
+            </DataTemplate>
+        </Setter>
+        <Style Selector="^ /template/ m3|MaterialSurface#PART_Surface">
+            <Setter Property="Margin" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.CloseStateInset}}" />
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

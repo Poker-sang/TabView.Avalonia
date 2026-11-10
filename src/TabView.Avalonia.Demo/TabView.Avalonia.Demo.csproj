@@ -15,6 +15,7 @@
 		<PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
 		<PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
+		<PackageReference Include="Avalonia.Themes.Fluent2" Version="$(AvaloniaVersion)" />
 		<PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
 		<PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3">
 			<IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
@@ -22,7 +23,9 @@
 		</PackageReference>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="FluentIcons.Avalonia" Version="2.1.331" />
+		<PackageReference Include="Shirasagi0012.MaterialTypography.Roboto" Version="0.0.3" />
 
 		<ProjectReference Include="..\TabView.Avalonia\TabView.Avalonia.csproj" />
+		<ProjectReference Include="..\TabView.Avalonia.Material3\TabView.Avalonia.Material3.csproj" />
 	</ItemGroup>
 </Project>

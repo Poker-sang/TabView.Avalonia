@@ -3,9 +3,14 @@
         <File Path=".gitignore" />
         <File Path="Directory.Build.props" />
         <File Path="LICENSE" />
+        <File Path="NuGet.Config" />
         <File Path="README.md" />
         <File Path="Settings.XamlStyler" />
     </Folder>
+    <Folder Name="/src/">
+        <Project Path="src/TabView.Avalonia.Material3/TabView.Avalonia.Material3.csproj" />
+    </Folder>
     <Project Path="src/TabView.Avalonia.Demo/TabView.Avalonia.Demo.csproj" />
     <Project Path="src/TabView.Avalonia/TabView.Avalonia.csproj" />
+    <Project Path="tests/TabView.Avalonia.Tests/TabView.Avalonia.Tests.csproj" />
 </Solution>

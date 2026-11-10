@@ -2,48 +2,36 @@
     x:Class="TabView.Avalonia.Demo.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fluent="using:FluentIcons.Avalonia"
-    xmlns:markup="using:FluentIcons.Avalonia.Markup"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:TabView.Avalonia.Demo.ViewModels"
-    xmlns:avalonia="clr-namespace:TabView.Avalonia;assembly=TabView.Avalonia"
-    Title="TabView.Avalonia.Demo"
+    xmlns:local="using:TabView.Avalonia.Demo"
+    xmlns:tabs="using:TabView.Avalonia"
+    Title="TabsView · Fluent 2"
+    Width="1120"
+    Height="760"
+    MinWidth="640"
+    MinHeight="540"
     ExtendClientAreaToDecorationsHint="True"
+    ExtendClientAreaTitleBarHeightHint="40"
     Icon="avares://TabView.Avalonia.Demo/Assets/avalonia-logo.ico"
-    WindowDecorations="Full"
-    mc:Ignorable="d"
-    d:DesignHeight="450"
-    d:DesignWidth="800">
+    WindowStartupLocation="CenterScreen">
 
-    <avalonia:TabsView
-        x:Name="MyTabsView"
-        AddTabButtonClick="TabsView_OnAddTabButtonClick"
-        LeftHeaderContentDraggable="True">
-        <avalonia:TabsView.LeftHeaderContent>
-            <Image
-                Width="20"
-                Height="20"
-                Margin="16,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Source="avares://TabView.Avalonia.Demo/Assets/avalonia-logo.ico" />
-        </avalonia:TabsView.LeftHeaderContent>
-        <avalonia:TabsView.RightHeaderContent>
-            <Button
-                MaxWidth="32"
-                MaxHeight="32"
-                Padding="5"
-                Background="Transparent"
-                CornerRadius="100">
-                <fluent:SymbolIcon IconVariant="Color" Symbol="Person" />
-                <Button.Flyout>
-                    <MenuFlyout>
-                        <MenuItem Header="Sample Menu" Icon="{markup:SymbolIcon Alert}" />
-                    </MenuFlyout>
-                </Button.Flyout>
-            </Button>
-        </avalonia:TabsView.RightHeaderContent>
-    </avalonia:TabsView>
-
+    <Grid x:Name="TabsHost">
+        <tabs:TabsView
+            x:Name="InitialTabsView"
+            AddTabButtonClick="TabsView_OnAddTabButtonClick"
+            LeftHeaderContentDraggable="True">
+            <tabs:TabsView.LeftHeaderContent>
+                <Viewbox
+                    Width="16"
+                    Height="16"
+                    Margin="{DynamicResource DemoHeaderIconMargin}"
+                    VerticalAlignment="Center">
+                    <fluent:SymbolIcon Foreground="{DynamicResource DemoAccentBrush}" Symbol="TabDesktop" />
+                </Viewbox>
+            </tabs:TabsView.LeftHeaderContent>
+            <tabs:TabsView.RightHeaderContent>
+                <local:ThemeControls />
+            </tabs:TabsView.RightHeaderContent>
+        </tabs:TabsView>
+    </Grid>
 </Window>

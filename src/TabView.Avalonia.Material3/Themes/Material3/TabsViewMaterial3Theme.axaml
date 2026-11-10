@@ -1,0 +1,21 @@
+<Styles
+    x:Class="TabView.Avalonia.TabsViewMaterial3Theme"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TabView.Avalonia"
+    xmlns:m3="https://github.com/Shirasagi0012/Material3Expressive.Avalonia">
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="Resources.axaml" />
+                <ResourceInclude Source="Buttons.axaml" />
+                <ResourceInclude Source="TabsViewItem.axaml" />
+                <ResourceInclude Source="TabsView.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+    <Style Selector="local|TabsView ContentPage">
+        <Setter Property="Background" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.ContentColor}}" />
+        <Setter Property="Foreground" Value="{m3:Token {x:Static m3:MaterialTokens+Sys+Color.OnSurface}}" />
+    </Style>
+</Styles>

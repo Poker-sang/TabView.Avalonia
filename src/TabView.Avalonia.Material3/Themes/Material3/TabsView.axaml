@@ -1,0 +1,93 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TabView.Avalonia"
+    xmlns:m3="https://github.com/Shirasagi0012/Material3Expressive.Avalonia"
+    xmlns:primitives="using:TabView.Avalonia.Primitives">
+
+    <ControlTheme x:Key="TabsViewMaterial3TabControlTheme" TargetType="local:DragTabControl">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DockPanel>
+                    <Panel DockPanel.Dock="{TemplateBinding TabStripPlacement}">
+                        <primitives:TopPanel
+                            Name="PART_TopPanel"
+                            HorizontalAlignment="Stretch">
+                            <Rectangle
+                                Name="PART_LeftDragWindowThumb"
+                                MinWidth="{Binding Owner.LeftIndent, RelativeSource={RelativeSource TemplatedParent}}"
+                                Fill="Transparent"
+                                Win32Properties.NonClientHitTestResult="Caption" />
+                            <ContentPresenter
+                                Name="PART_LeftHeaderContent"
+                                Background="Transparent"
+                                Content="{Binding Owner.LeftHeaderContent, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}" />
+                            <Button
+                                Name="PART_AddItemButton"
+                                Command="{Binding Owner.AddItemCommand, RelativeSource={RelativeSource TemplatedParent}}"
+                                IsVisible="{Binding Owner.ShowDefaultAddButton, RelativeSource={RelativeSource TemplatedParent}}"
+                                Theme="{StaticResource TabsViewMaterial3AddButtonTheme}" />
+                            <Rectangle
+                                Name="PART_MiddleDragWindowThumb"
+                                Fill="Transparent"
+                                Win32Properties.NonClientHitTestResult="Caption" />
+                            <ContentPresenter
+                                Name="PART_RightHeaderContent"
+                                Background="Transparent"
+                                Content="{Binding Owner.RightHeaderContent, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Rectangle
+                                Name="PART_RightDragWindowThumb"
+                                MinWidth="{Binding Owner.RightIndent, RelativeSource={RelativeSource TemplatedParent}}"
+                                Fill="Transparent"
+                                Win32Properties.NonClientHitTestResult="Caption" />
+                        </primitives:TopPanel>
+                    </Panel>
+
+                    <ContentPresenter
+                        Content="{Binding Owner.LeftContent, RelativeSource={RelativeSource TemplatedParent}}"
+                        DockPanel.Dock="Left" />
+                    <Panel Name="PART_ContentRoot" Background="{m3:Token {x:Static local:TabsViewMaterial3Tokens.ContentColor}}" ClipToBounds="True">
+                        <ContentPresenter
+                            Name="PART_SelectedContentHost2"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                            IsVisible="False" />
+                        <ContentPresenter
+                            Name="PART_SelectedContentHost"
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Panel>
+                </DockPanel>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type local:TabsView}" TargetType="local:TabsView">
+        <Setter Property="Background" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.StripColor}}" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="AdjacentHeaderItemOffset" Value="0" />
+        <Setter Property="TabItemWidth" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.ItemWidth}}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border
+                    Padding="{TemplateBinding Padding}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <local:DragTabControl
+                        Name="PART_TabControl"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        ItemContainerTheme="{StaticResource {x:Type local:TabsViewItem}}"
+                        Theme="{StaticResource TabsViewMaterial3TabControlTheme}" />
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

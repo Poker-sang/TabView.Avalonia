@@ -1,0 +1,33 @@
+<UserControl
+    x:Class="TabView.Avalonia.Demo.ThemeControls"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:fluent="using:FluentIcons.Avalonia">
+    <StackPanel Margin="{DynamicResource DemoThemeControlsMargin}" VerticalAlignment="Center" Orientation="Horizontal" Spacing="8">
+        <ComboBox
+            x:Name="ThemePicker"
+            Width="128"
+            Height="{DynamicResource DemoThemeControlHeight}"
+            MinHeight="0"
+            Padding="8,2"
+            AutomationProperties.Name="Tab theme"
+            SelectionChanged="ThemePicker_OnSelectionChanged">
+            <x:String>Fluent</x:String>
+            <x:String>Fluent 2</x:String>
+            <x:String>Material 3</x:String>
+        </ComboBox>
+        <Button
+            Width="32"
+            Height="{DynamicResource DemoThemeControlHeight}"
+            MinHeight="0"
+            Padding="0"
+            VerticalAlignment="Center"
+            AutomationProperties.Name="Switch light or dark theme"
+            Click="ToggleTheme_OnClick"
+            ToolTip.Tip="Switch light / dark">
+            <Viewbox Width="16" Height="16">
+                <fluent:SymbolIcon x:Name="ThemeIcon" Symbol="WeatherMoon" />
+            </Viewbox>
+        </Button>
+    </StackPanel>
+</UserControl>
