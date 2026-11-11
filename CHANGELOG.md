@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0-preview.2
+
+- Fix clean restores by resolving `Avalonia.BuildServices` and `Avalonia.Angle.Windows.Natives` from nuget.org while keeping the framework packages on the nightly feed.
+
 ## 2.0.0-preview.1
 
 - Target .NET 10 and .NET 11; enable Runtime Async V2 for .NET 11.

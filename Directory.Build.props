@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<!-- Pinned nightly containing AvaloniaUI/Avalonia#21771 (Fluent 2). -->
 		<AvaloniaVersion>12.2.999-cibuild0101188-alpha</AvaloniaVersion>
-		<Version>2.0.0-preview.1</Version>
+		<Version>2.0.0-preview.2</Version>
 		<AssemblyVersion>2.0.0.0</AssemblyVersion>
 		<FileVersion>2.0.0.0</FileVersion>
 		<Authors>Poker</Authors>
