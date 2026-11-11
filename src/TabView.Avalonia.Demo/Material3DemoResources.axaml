@@ -1,4 +1,5 @@
-<ResourceDictionary xmlns="https://github.com/avaloniaui"
+<ResourceDictionary x:Class="TabView.Avalonia.Demo.Material3DemoResources"
+    xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:m3="https://github.com/Shirasagi0012/Material3Expressive.Avalonia">
     <SolidColorBrush x:Key="DemoTextBrush" Color="{m3:Token {x:Static m3:MaterialTokens+Sys+Color.OnSurface}}" />

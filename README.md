@@ -162,6 +162,18 @@ MyTabsView.InterTabController = null;
 
 ## Build and publish
 
+Publish the Windows x64 Native AOT demo with the .NET 11 SDK and the Visual Studio
+C++ desktop build tools installed:
+
+```pwsh
+dotnet publish src/TabView.Avalonia.Demo -f net11.0 -p:PublishProfile=WinX64Aot -o artifacts/demo-win-x64-aot
+```
+
+Distribute the entire output folder (the native EXE and its graphics/text DLLs).
+The demo requires no .NET runtime installation. Theme resource dictionaries have
+compiled XAML classes and are instantiated directly so theme switching survives
+Native AOT trimming.
+
 `dotnet test TabView.Avalonia.slnx -c Release` builds and tests both target frameworks.
 `dotnet pack TabView.Avalonia.slnx -c Release` creates the core and Material 3 NuGet
 packages in `output/`. The demo and tests are not packed.

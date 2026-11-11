@@ -2,14 +2,12 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Themes.Fluent2;
 using Avalonia.Styling;
 using Material3Expressive.Styles;
 using System.Linq;
 using System.Collections.Generic;
-using System;
 
 namespace TabView.Avalonia.Demo;
 
@@ -64,12 +62,9 @@ public partial class App : Application
             DemoTheme.Fluent2 => new TabsViewFluent2Theme(),
             _ => new TabsViewFluentTheme()
         };
-        Resources.MergedDictionaries[0] = new ResourceInclude(new Uri("avares://TabView.Avalonia.Demo/"))
-        {
-            Source = new Uri(SelectedTheme == DemoTheme.Material3
-                ? "avares://TabView.Avalonia.Demo/Material3DemoResources.axaml"
-                : "avares://TabView.Avalonia.Demo/FluentDemoResources.axaml")
-        };
+        Resources.MergedDictionaries[0] = SelectedTheme == DemoTheme.Material3
+            ? new Material3DemoResources()
+            : new FluentDemoResources();
     }
 
     public override void Initialize()
