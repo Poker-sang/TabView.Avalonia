@@ -1,9 +1,5 @@
 # Changelog
 
-## 2.0.0-preview.2
-
-- Fix clean restores by resolving `Avalonia.BuildServices` and `Avalonia.Angle.Windows.Natives` from nuget.org while keeping the framework packages on the nightly feed.
-
 ## 2.0.0-preview.1
 
 - Target .NET 10 and .NET 11; enable Runtime Async V2 for .NET 11.
@@ -15,6 +11,7 @@
 - Fix Material 3 tear-off by keeping the drag thumb's pointer capture when the pointer leaves the tab.
 - Update Avalonia to `12.2.999-cibuild0101188-alpha`, FluentIcons.Avalonia to 2.1.345, Microsoft.NET.Test.Sdk to 18.11.1, and xunit.runner.visualstudio to 4.0.1.
 - Keep xUnit 3.2.2 for compatibility with Avalonia.Headless.XUnit; other direct dependencies already use their latest stable versions.
+- Fix clean restores by resolving `Avalonia.BuildServices` and `Avalonia.Angle.Windows.Natives` from nuget.org while keeping the framework packages on the nightly feed.
 
 This prerelease requires the Avalonia nightly feed configured in `NuGet.Config`.
 All Avalonia packages in a consuming application must use the same nightly version.
