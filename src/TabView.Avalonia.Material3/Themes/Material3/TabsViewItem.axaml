@@ -18,7 +18,9 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="FocusAdorner" Value="{x:Null}" />
-        <Setter Property="m3:MaterialInteraction.IsInteractive" Value="True" />
+        <!-- Clickable feedback cancels descendant pointer capture on exit. Tab headers
+             keep the shared thumb's drag gesture; their hover/focus styles supply feedback. -->
+        <Setter Property="m3:MaterialInteraction.IsInteractive" Value="False" />
         <Setter Property="Template">
             <ControlTemplate>
                 <Panel Background="Transparent">
