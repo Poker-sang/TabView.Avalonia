@@ -11,8 +11,8 @@ A brand-new `TabsView` control that supports dragging and tearing, based on the 
 Install the package from NuGet:
 
 ```pwsh
-Install-Package TabView.Avalonia
-# Or 'dotnet add package TabView.Avalonia'
+Install-Package TabView.Avalonia -Version 2.0.0-preview.1
+# Or 'dotnet add package TabView.Avalonia --version 2.0.0-preview.1'
 ```
 
 Add the Style to your App.axaml:
@@ -40,7 +40,7 @@ For Fluent 2 / WinUI 3 styling, reference `Avalonia.Themes.Fluent2` and use:
 </Application.Styles>
 ```
 
-This preview pins Avalonia to `12.2.999-cibuild0101180-alpha` in
+This preview pins Avalonia to `12.2.999-cibuild0101188-alpha` in
 `Directory.Build.props`, with the official nightly feed in `NuGet.Config`.
 All Avalonia packages must use the same version. Fluent 2 comes from
 [Avalonia PR #21771](https://github.com/AvaloniaUI/Avalonia/pull/21771).
@@ -48,7 +48,14 @@ The tab template follows the [WinUI 3 TabView XAML](https://github.com/microsoft
 its [resource dictionary](https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/TabView/TabView_themeresources.xaml)
 and selected-tab geometry in `TabViewItem.cpp`.
 
-Run the demo with `dotnet run --project src/TabView.Avalonia.Demo`.
+Both packages target .NET 10 and .NET 11. Building this repository requires the
+.NET 11 SDK pinned in `global.json`. The .NET 11 target enables
+[Runtime Async V2](https://learn.microsoft.com/dotnet/core/whats-new/dotnet-11/runtime#runtime-async)
+with `<Features>runtime-async=on</Features>`; the .NET 10 target uses the usual
+compiler-generated async state machines.
+
+Run the demo with `dotnet run --project src/TabView.Avalonia.Demo --framework net11.0`.
+Use `--framework net10.0` to try the .NET 10 build.
 The tab-strip picker switches between Fluent, Fluent 2 and Material 3 while preserving pages,
 selection and light/dark mode, including torn-off windows. The moon/sun button
 switches light/dark mode. `-- --fluent1` starts with the original theme;
@@ -72,7 +79,8 @@ The Material 3 preview is isolated in `src/TabView.Avalonia.Material3/`, with it
 `Themes/Material3/` templates and a dependency on
 [`Shirasagi0012.Material3Expressive.Avalonia` 0.1.0](https://github.com/Shirasagi0012/Material3Expressive.Avalonia).
 The core library and Fluent themes do not depend on Material3Expressive or its Skia 4 stack.
-Reference the Material 3 project and load its theme after `MaterialTheme`:
+Install `TabView.Avalonia.Material3` version `2.0.0-preview.1` from NuGet and load
+its theme after `MaterialTheme`:
 
 ```xml
 <Application
@@ -102,6 +110,9 @@ the selected tab keeps its close button, with the header yielding space to it.
 `CloseButtonVisibilityThreshold` controls this boundary; fixed tabs and the global
 close-button setting still apply. All three themes share `TabHeaderPanel` for
 this rule, content clipping and close-button placement.
+Tab headers retain pointer capture outside their bounds so dragging, tearing out
+and merging use the same implementation as the Fluent themes. Material clickable
+feedback is limited to the add/close buttons; header feedback uses hover/focus styles.
 This is a document-tab adaptation rather than
 the indicator-based navigation tabs in the Material specification. Compare
 [Chromium's horizontal tab styling](https://github.com/chromium/chromium/blob/main/chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc)
@@ -148,3 +159,19 @@ To disable tearing, you can set the `TabsView.InterTabController` property to `n
 ```cs
 MyTabsView.InterTabController = null;
 ```
+
+## Build and publish
+
+`dotnet test TabView.Avalonia.slnx -c Release` builds and tests both target frameworks.
+`dotnet pack TabView.Avalonia.slnx -c Release` creates the core and Material 3 NuGet
+packages in `output/`. The demo and tests are not packed.
+
+The `Publish NuGet` GitHub Actions workflow tests and packs a release, then publishes
+both packages. Configure NuGet.org Trusted Publishing for user `Poker`, repository
+`Poker-sang/TabView.Avalonia`, and workflow `publish-nuget.yml`. Alternatively, set the
+repository secret `NUGET_API_KEY` with permission to publish both package IDs.
+Run the workflow manually from the release tag after the authentication is configured.
+The built packages are also retained as workflow artifacts.
+
+Dependencies are updated to the latest compatible versions. xUnit stays at 3.2.2
+because Avalonia.Headless.XUnit's discoverers are not compatible with xUnit 4 yet.

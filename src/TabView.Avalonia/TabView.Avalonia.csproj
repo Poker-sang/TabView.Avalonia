@@ -1,29 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFrameworks>net10.0;net11.0</TargetFrameworks>
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
 		<IsAotCompatible>true</IsAotCompatible>
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Authors>Poker</Authors>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<Description>Draggable and tearable tabs based on Avalonia's TabbedPage</Description>
 		<PackageTags>TabControl, TabView, Draggable, Tearable, Avalonia, AvaloniaUI</PackageTags>
 		<Title>$(AssemblyName)</Title>
-		<RepositoryUrl>https://github.com/Poker-sang/TabView.Avalonia.git</RepositoryUrl>
-		<PackageProjectUrl>https://github.com/Poker-sang/TabView.Avalonia</PackageProjectUrl>
-		<AssemblyVersion>1.0.0</AssemblyVersion>
-		<FileVersion>$(AssemblyVersion)</FileVersion>
-		<VersionPrefix>$(AssemblyVersion)</VersionPrefix>
-		<Version>$(AssemblyVersion)</Version>
-
-		<PackageOutputPath>../output/</PackageOutputPath>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -1,0 +1,59 @@
+name: Publish NuGet
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-nuget
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-dotnet@v6.1.0
+        with:
+          global-json-file: global.json
+          dotnet-version: |
+            10.0.x
+            11.0.x
+      - name: Verify release tag
+        shell: pwsh
+        run: |
+          $version = dotnet msbuild src/TabView.Avalonia/TabView.Avalonia.csproj -getProperty:Version
+          if ($env:GITHUB_REF_TYPE -ne 'tag' -or $env:GITHUB_REF_NAME -ne "v$version") {
+            throw "Run this workflow from tag v$version."
+          }
+      - name: Test .NET 10 and .NET 11
+        run: dotnet test TabView.Avalonia.slnx -c Release --verbosity minimal --logger "trx"
+      - name: Pack both theme packages
+        run: dotnet pack TabView.Avalonia.slnx -c Release --no-build --output output
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: nuget-packages
+          path: output/*.nupkg
+          if-no-files-found: error
+      - name: Authenticate with NuGet Trusted Publishing
+        if: env.NUGET_API_KEY == ''
+        uses: NuGet/login@v1.2.0
+        id: login
+        with:
+          user: Poker
+      - name: Publish packages
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY || steps.login.outputs.NUGET_API_KEY }}
+        shell: pwsh
+        run: |
+          Get-ChildItem output/*.nupkg | Sort-Object Name | ForEach-Object {
+            dotnet nuget push $_.FullName --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+            if ($LASTEXITCODE -ne 0) { throw "NuGet push failed for $($_.Name)." }
+          }

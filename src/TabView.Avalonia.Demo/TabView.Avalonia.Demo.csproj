@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFrameworks>net10.0;net11.0</TargetFrameworks>
+		<IsPackable>false</IsPackable>
 		<Nullable>enable</Nullable>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
@@ -22,7 +23,7 @@
 			<PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-		<PackageReference Include="FluentIcons.Avalonia" Version="2.1.331" />
+		<PackageReference Include="FluentIcons.Avalonia" Version="2.1.345" />
 		<PackageReference Include="Shirasagi0012.MaterialTypography.Roboto" Version="0.0.3" />
 
 		<ProjectReference Include="..\TabView.Avalonia\TabView.Avalonia.csproj" />
