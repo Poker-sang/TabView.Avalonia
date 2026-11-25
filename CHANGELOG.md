@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+
+- Stable release of the changes below, targeting Avalonia 12.2.0 from nuget.org.
+
 ## 2.0.0-preview.2
 
 - Use Avalonia 12.2.0 and the stable Fluent 2 theme from nuget.org.

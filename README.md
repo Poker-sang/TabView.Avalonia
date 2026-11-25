@@ -11,8 +11,8 @@ A brand-new `TabsView` control that supports dragging and tearing, based on the 
 Install the package from NuGet:
 
 ```pwsh
-Install-Package TabView.Avalonia -Version 2.0.0-preview.2
-# Or 'dotnet add package TabView.Avalonia --version 2.0.0-preview.2'
+Install-Package TabView.Avalonia -Version 2.0.0
+# Or 'dotnet add package TabView.Avalonia --version 2.0.0'
 ```
 
 Add the Style to your App.axaml:
@@ -75,11 +75,11 @@ The plus uses integer path edges for crisp strokes at 100%.
 Pixel regression tests cover the join in light/dark mode at 100%, 125%, 150% and 200%.
 Run all checks with `dotnet test TabView.Avalonia.slnx`.
 
-The Material 3 preview is isolated in `src/TabView.Avalonia.Material3/`, with its own
+The Material 3 theme is isolated in `src/TabView.Avalonia.Material3/`, with its own
 `Themes/Material3/` templates and a dependency on
 [`Shirasagi0012.Material3Expressive.Avalonia` 0.1.0](https://github.com/Shirasagi0012/Material3Expressive.Avalonia).
 The core library and Fluent themes do not depend on Material3Expressive or its Skia 4 stack.
-Install `TabView.Avalonia.Material3` version `2.0.0-preview.2` from NuGet and load
+Install `TabView.Avalonia.Material3` version `2.0.0` from NuGet and load
 its theme after `MaterialTheme`:
 
 ```xml
