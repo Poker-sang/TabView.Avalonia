@@ -15,6 +15,7 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using Material3Expressive.Baseline;
 using Material3Expressive.Components;
+using Material3Expressive.Foundation.Rendering;
 using Material3Expressive.Foundation.Tokens;
 using Material3Expressive.Tokens;
 using ComposeAnimation;
@@ -163,7 +164,9 @@ public class Material3ThemeTests
         }
         try
         {
-            var add = tabs.GetVisualDescendants().OfType<Button>().Single(b => b.Name == "PART_AddItemButton");
+            var add = tabs.GetVisualDescendants().OfType<IconButton>().Single(b => b.Name == "PART_AddItemButton");
+            Assert.Equal(new Size(32, 32), add.Bounds.Size);
+            Assert.Equal(new Size(20, 20), add.GetVisualDescendants().OfType<MaterialSymbol>().Single().Bounds.Size);
             var addPoint = add.TranslatePoint(new Point(16, 16), window)!.Value;
             window.MouseMove(addPoint); Frames();
             var scheme = new ColorScheme { Seed = Color.Parse("#4285F4") };
@@ -549,7 +552,7 @@ public class Material3ThemeTests
 
     private static void SavePreview(Control control, string name)
     {
-        var directory = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "../../../../../artifacts"));
+        var directory = Path.Combine(AppContext.BaseDirectory, "previews");
         Directory.CreateDirectory(directory);
         using var bitmap = new RenderTargetBitmap(new PixelSize((int)control.Bounds.Width, (int)control.Bounds.Height));
         bitmap.Render(control);

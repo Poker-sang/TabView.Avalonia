@@ -23,8 +23,10 @@
                                 Background="Transparent"
                                 Content="{Binding Owner.LeftHeaderContent, RelativeSource={RelativeSource TemplatedParent}}" />
                             <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}" />
-                            <Button
+                            <m3:IconButton
                                 Name="PART_AddItemButton"
+                                Classes="xsmall"
+                                Symbol="Add"
                                 Command="{Binding Owner.AddItemCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                 IsVisible="{Binding Owner.ShowDefaultAddButton, RelativeSource={RelativeSource TemplatedParent}}"
                                 Theme="{StaticResource TabsViewMaterial3AddButtonTheme}" />

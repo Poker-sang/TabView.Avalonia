@@ -11,8 +11,8 @@ A brand-new `TabsView` control that supports dragging and tearing, based on the 
 Install the package from NuGet:
 
 ```pwsh
-Install-Package TabView.Avalonia -Version 2.0.0-preview.1
-# Or 'dotnet add package TabView.Avalonia --version 2.0.0-preview.1'
+Install-Package TabView.Avalonia -Version 2.0.0-preview.2
+# Or 'dotnet add package TabView.Avalonia --version 2.0.0-preview.2'
 ```
 
 Add the Style to your App.axaml:
@@ -40,10 +40,8 @@ For Fluent 2 / WinUI 3 styling, reference `Avalonia.Themes.Fluent2` and use:
 </Application.Styles>
 ```
 
-This preview pins Avalonia to `12.2.999-cibuild0101188-alpha` in
-`Directory.Build.props`, with the official nightly feed in `NuGet.Config`.
-All Avalonia packages must use the same version. Fluent 2 comes from
-[Avalonia PR #21771](https://github.com/AvaloniaUI/Avalonia/pull/21771).
+Use version `12.2.0` of `Avalonia.Themes.Fluent2` and the other Avalonia
+framework packages from nuget.org. [Avalonia 12.2.0 release](https://github.com/AvaloniaUI/Avalonia/releases/tag/12.2.0)
 The tab template follows the [WinUI 3 TabView XAML](https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/TabView/TabView.xaml),
 its [resource dictionary](https://github.com/microsoft/microsoft-ui-xaml/blob/main/controls/dev/TabView/TabView_themeresources.xaml)
 and selected-tab geometry in `TabViewItem.cpp`.
@@ -65,7 +63,9 @@ Fluent 2 dimensions and brushes use the `TabsViewFluent2` resource prefix, for
 example `TabsViewFluent2ItemHeight`, `TabsViewFluent2ItemWidth`,
 `TabsViewFluent2ItemCornerRadius` and `TabsViewFluent2ContentBackground`.
 Override them in application resources; colors default to Fluent 2 semantic tokens
-and follow the current theme variant. The tab strip currently uses the control's
+and follow the current theme variant. Tab buttons inherit Fluent 2's `DefaultButtonTheme`,
+with defaults for corner radius, animation duration and tab label size supplied by Fluent 2.
+The tab strip currently uses the control's
 horizontal layout and shrinks tabs to fit, as in the original theme.
 The selected tab joins the content surface without WinUI's horizontal divider.
 Add and close actions use vector paths with one-DIP strokes and no dependency on
@@ -79,7 +79,7 @@ The Material 3 preview is isolated in `src/TabView.Avalonia.Material3/`, with it
 `Themes/Material3/` templates and a dependency on
 [`Shirasagi0012.Material3Expressive.Avalonia` 0.1.0](https://github.com/Shirasagi0012/Material3Expressive.Avalonia).
 The core library and Fluent themes do not depend on Material3Expressive or its Skia 4 stack.
-Install `TabView.Avalonia.Material3` version `2.0.0-preview.1` from NuGet and load
+Install `TabView.Avalonia.Material3` version `2.0.0-preview.2` from NuGet and load
 its theme after `MaterialTheme`:
 
 ```xml
@@ -104,7 +104,9 @@ Material document tabs follow Chrome's connected selected-tab shape: rounded top
 corners, concave feet, shared selected/content color, quiet inactive separators,
 and round close/add state layers. Hovering an inactive tab highlights its rounded
 body and hides both adjacent dividers; the selected tab keeps its background.
-The 20 DIP close feedback sits inside a 28 DIP hit target, while add feedback is 32 DIP.
+The 20 DIP close feedback sits inside a 28 DIP hit target. The add action uses
+Material 3's standard `IconButton` in its `xsmall` size, with a 32 DIP container
+and a 20 DIP glyph. [Material3Expressive IconButton](https://github.com/Shirasagi0012/Material3Expressive.Avalonia/blob/d5db6b147019045406080d265ba78f198f9ba6b6/src/Material3Expressive/Components/IconButton/README.md)
 Close buttons have a reserved area above 75 DIP tab width. At or below 75 DIP only
 the selected tab keeps its close button, with the header yielding space to it.
 `CloseButtonVisibilityThreshold` controls this boundary; fixed tabs and the global

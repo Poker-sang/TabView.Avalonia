@@ -6,7 +6,7 @@
     <StackPanel Margin="{DynamicResource DemoThemeControlsMargin}" VerticalAlignment="Center" Orientation="Horizontal" Spacing="8">
         <ComboBox
             x:Name="ThemePicker"
-            Width="128"
+            MinWidth="128"
             Height="{DynamicResource DemoThemeControlHeight}"
             MinHeight="0"
             Padding="8,2"

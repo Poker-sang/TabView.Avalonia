@@ -42,16 +42,14 @@
         <Style Selector="^:disabled"><Setter Property="Opacity" Value="{m3:Token {x:Static m3:MaterialTokens+Sys+State.DisabledContentOpacity}}" /></Style>
     </ControlTheme>
 
-    <ControlTheme x:Key="TabsViewMaterial3AddButtonTheme" TargetType="Button" BasedOn="{StaticResource TabsViewMaterial3ButtonTheme}">
+    <ControlTheme x:Key="TabsViewMaterial3AddButtonTheme" TargetType="m3:IconButton" BasedOn="{StaticResource MaterialStandardIconButtonTheme}">
         <Setter Property="Width" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.AddButtonSize}}" />
         <Setter Property="Height" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.AddButtonSize}}" />
         <Setter Property="Margin" Value="4,4,8,4" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Foreground" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.LabelColor}}" />
         <Setter Property="AutomationProperties.Name" Value="Add new tab" />
         <Setter Property="ToolTip.Tip" Value="Add new tab" />
-        <Setter Property="ContentTemplate">
-            <DataTemplate><m3:MaterialSymbol Symbol="Add" Width="20" Height="20" /></DataTemplate>
-        </Setter>
         <Style Selector="^:pointerover">
             <Setter Property="Background" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.AddHoverColor}}" />
             <Setter Property="Foreground" Value="{m3:Token {x:Static local:TabsViewMaterial3Tokens.AddHoverLabelColor}}" />

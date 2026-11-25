@@ -3,6 +3,7 @@ using System.Linq;
 using System;
 using System.Runtime.InteropServices;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
@@ -34,6 +35,28 @@ public static class TestAppBuilder
 
 public class ThemeTests
 {
+    [AvaloniaFact]
+    public void Fluent2ButtonsUseTheDefaultTemplateWithIndependentTransitions()
+    {
+        var (window, tabs) = OpenTabs(true);
+        try
+        {
+            var add = tabs.GetVisualDescendants().OfType<Button>()
+                .Single(button => button.Name == "PART_AddItemButton");
+            var close = CloseButton(tabs.SelectedTabItem!);
+            var defaultTheme = Assert.IsType<ControlTheme>(add.FindResource("DefaultButtonTheme"));
+            Assert.Same(defaultTheme, add.Theme!.BasedOn!.BasedOn);
+            var addPresenter = add.GetVisualChildren().OfType<ContentPresenter>().Single();
+            var closePresenter = close.GetVisualChildren().OfType<ContentPresenter>().Single();
+            var addTransition = Assert.IsType<BrushTransition>(Assert.Single(addPresenter.Transitions!));
+            var closeTransition = Assert.IsType<BrushTransition>(Assert.Single(closePresenter.Transitions!));
+            Assert.NotSame(addTransition, closeTransition);
+            Assert.Equal(add.FindResource("ControlFasterAnimationDuration"), addTransition.Duration);
+            Assert.Equal(addTransition.Duration, closeTransition.Duration);
+        }
+        finally { window.Close(); }
+    }
+
     [AvaloniaTheory]
     [InlineData(900, 32)]
     [InlineData(400, 32)]

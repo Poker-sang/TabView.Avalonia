@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0-preview.2
+
+- Use Avalonia 12.2.0 and the stable Fluent 2 theme from nuget.org.
+- Reuse the Fluent 2 button template and theme resources, and use Material 3's extra-small IconButton for adding tabs.
+- Allow the Demo theme picker to grow to fit its selected label.
+
 ## 2.0.0-preview.1
 
 - Target .NET 10 and .NET 11; enable Runtime Async V2 for .NET 11.
@@ -13,5 +19,5 @@
 - Keep xUnit 3.2.2 for compatibility with Avalonia.Headless.XUnit; other direct dependencies already use their latest stable versions.
 - Fix clean restores by resolving `Avalonia.BuildServices` and `Avalonia.Angle.Windows.Natives` from nuget.org while keeping the framework packages on the nightly feed.
 
-This prerelease requires the Avalonia nightly feed configured in `NuGet.Config`.
-All Avalonia packages in a consuming application must use the same nightly version.
+This prerelease requires Avalonia `12.2.999-cibuild0101188-alpha` from the
+[Avalonia nightly feed](https://nuget-feed-nightly.avaloniaui.net/v3/index.json).

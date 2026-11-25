@@ -63,7 +63,7 @@ public sealed class TabsViewMaterial3TokenSource : ITokenSource
         [TabsViewMaterial3Tokens.CloseButtonSize] = 28d,
         [TabsViewMaterial3Tokens.CloseButtonVisibilityThreshold] = TabHeaderPanel.DefaultCompactWidthThreshold,
         [TabsViewMaterial3Tokens.CloseButtonMinimumWidth] = 16d,
-        [TabsViewMaterial3Tokens.AddButtonSize] = 32d,
+        [TabsViewMaterial3Tokens.AddButtonSize] = new TokenRef(MaterialTokens.Comp.IconButtonXSmall.ContainerHeight),
         [TabsViewMaterial3Tokens.CloseStateInset] = new Thickness(4),
         [TabsViewMaterial3Tokens.HoverColor] = new TokenRef(MaterialTokens.Sys.Color.PrimaryContainer),
         [TabsViewMaterial3Tokens.HoverLabelColor] = new TokenRef(MaterialTokens.Sys.Color.OnPrimaryContainer),
