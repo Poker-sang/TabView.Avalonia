@@ -255,6 +255,54 @@ public class TabsView : TabbedPage
 
     protected override Type StyleKeyOverride => typeof(TabsView);
 
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (e.Handled || !IsKeyboardNavigationEnabled)
+            return;
+
+        // TabbedPage handles Ctrl+Tab without wrapping. Handle these gestures before it.
+        if (e.Key is Key.Tab && e.KeyModifiers is KeyModifiers.Control or (KeyModifiers.Control | KeyModifiers.Shift))
+        {
+            e.Handled = MoveTabSelection(e.KeyModifiers == KeyModifiers.Control ? 1 : -1);
+            return;
+        }
+
+        if (e.Key is Key.F4 && e.KeyModifiers == KeyModifiers.Control && ShowDefaultCloseButton &&
+            SelectedTabItem is { IsEffectivelyEnabled: true } selected && selected.LogicalIndex >= FixedHeaderCount)
+        {
+            e.Handled = true;
+            CloseItem(selected);
+            return;
+        }
+
+        base.OnKeyDown(e);
+    }
+
+    private bool MoveTabSelection(int direction)
+    {
+        if (_tabControl is not { ItemCount: > 0 } tabControl)
+            return false;
+
+        var count = tabControl.ItemCount;
+        var selected = tabControl.SelectedIndex;
+        var index = selected < 0 && direction < 0 ? 0 : selected;
+        for (var visited = 0; visited < count; visited++)
+        {
+            index = (index + count + direction) % count;
+            if (index == selected)
+                break;
+            if (tabControl.ContainerFromIndex(index) is not TabsViewItem
+                { IsEffectivelyEnabled: true, IsEffectivelyVisible: true, Focusable: true, IsTabStop: true } target)
+                continue;
+
+            tabControl.SetCurrentValue(SelectingItemsControl.SelectedIndexProperty, index);
+            target.Focus(NavigationMethod.Directional);
+            return true;
+        }
+
+        return false;
+    }
+
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);

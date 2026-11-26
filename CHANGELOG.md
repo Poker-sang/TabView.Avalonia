@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.1
+
+- Let the window backdrop show through the Fluent 2 strip and content area. Use the WinUI selected-tab fill by default and keep `TabsViewFluent2ContentBackground` available for a shared layer.
+- Wrap `Ctrl+Tab` and `Ctrl+Shift+Tab` through eligible tabs. Close the selected tab with `Ctrl+F4` under the existing keyboard and default close settings.
+- Close a tab with the middle mouse button when the press and release land on the same tab.
+- Keep the existing tab compression, 75 DIP close-button visibility threshold, close targets, and tear-off behavior. The host window supplies Mica.
+
 ## 2.0.0
 
 - Stable release of the changes below, targeting Avalonia 12.2.0 from nuget.org.

@@ -12,6 +12,7 @@ public class TabsViewItem : TabItem
     #region Private Fields
 
     private int _prevZindex;
+    private IPointer? _middleClickPointer;
 
     #endregion
     
@@ -97,7 +98,6 @@ public class TabsViewItem : TabItem
         if (e.NameScope.Find<LeftPressedThumb>("PART_Thumb") is not { } thumb)
             return;
 
-        thumb.PointerReleased += ThumbOnPointerReleased;
         thumb.DragStarted += ThumbOnDragStarted;
         thumb.DragDelta += ThumbOnDragDelta;
         thumb.DragCompleted += ThumbOnDragCompleted;
@@ -153,10 +153,41 @@ public class TabsViewItem : TabItem
         ContentTemplate = null;
     }
 
-    private void ThumbOnPointerReleased(object? sender, PointerReleasedEventArgs args)
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
-        if (args.InitialPressMouseButton is MouseButton.Middle)
-            RaiseEvent(new RoutedEventArgs(MiddleClick, this));
+        var properties = e.GetCurrentPoint(this).Properties;
+        if (properties.PointerUpdateKind == PointerUpdateKind.MiddleButtonPressed && !properties.IsLeftButtonPressed)
+        {
+            _middleClickPointer = e.Pointer;
+            e.Pointer.Capture(this);
+            e.Handled = true;
+            return;
+        }
+
+        base.OnPointerPressed(e);
+    }
+
+    protected override void OnPointerReleased(PointerReleasedEventArgs e)
+    {
+        if (_middleClickPointer == e.Pointer &&
+            e.GetCurrentPoint(this).Properties.PointerUpdateKind == PointerUpdateKind.MiddleButtonReleased)
+        {
+            _middleClickPointer = null;
+            e.Pointer.Capture(null);
+            e.Handled = true;
+            if (IsEffectivelyEnabled && new Rect(Bounds.Size).Contains(e.GetPosition(this)))
+                RaiseEvent(new RoutedEventArgs(MiddleClick, this));
+            return;
+        }
+
+        base.OnPointerReleased(e);
+    }
+
+    protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
+    {
+        if (_middleClickPointer == e.Pointer)
+            _middleClickPointer = null;
+        base.OnPointerCaptureLost(e);
     }
 
     private void ThumbOnDragStarted(object? sender, VectorEventArgs args)

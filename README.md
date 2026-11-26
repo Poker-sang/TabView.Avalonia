@@ -11,8 +11,8 @@ A brand-new `TabsView` control that supports dragging and tearing, based on the 
 Install the package from NuGet:
 
 ```pwsh
-Install-Package TabView.Avalonia -Version 2.0.0
-# Or 'dotnet add package TabView.Avalonia --version 2.0.0'
+Install-Package TabView.Avalonia -Version 2.0.1
+# Or 'dotnet add package TabView.Avalonia --version 2.0.1'
 ```
 
 Add the Style to your App.axaml:
@@ -67,6 +67,9 @@ and follow the current theme variant. Tab buttons inherit Fluent 2's `DefaultBut
 with defaults for corner radius, animation duration and tab label size supplied by Fluent 2.
 The tab strip currently uses the control's
 horizontal layout and shrinks tabs to fit, as in the original theme.
+Use `Ctrl+Tab` and `Ctrl+Shift+Tab` to cycle through enabled, visible tabs.
+`Ctrl+F4` closes the selected tab when keyboard navigation and default closing
+are enabled and the tab is outside `FixedHeaderCount`.
 By default the strip and page content let the window background or Mica show
 through. The selected tab uses `SolidBackgroundFillColorTertiaryBrush`, which
 can be overridden with `TabsViewFluent2ItemBackgroundSelected`.
@@ -90,7 +93,7 @@ The Material 3 theme is isolated in `src/TabView.Avalonia.Material3/`, with its 
 `Themes/Material3/` templates and a dependency on
 [`Shirasagi0012.Material3Expressive.Avalonia` 0.1.0](https://github.com/Shirasagi0012/Material3Expressive.Avalonia).
 The core library and Fluent themes do not depend on Material3Expressive or its Skia 4 stack.
-Install `TabView.Avalonia.Material3` version `2.0.0` from NuGet and load
+Install `TabView.Avalonia.Material3` version `2.0.1` from NuGet and load
 its theme after `MaterialTheme`:
 
 ```xml

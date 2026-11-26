@@ -10,6 +10,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
+using Avalonia.Input.Raw;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
@@ -270,6 +271,96 @@ public class ThemeTests
             Assert.Null(content.Background);
 
             object? Brush(string key) => tabs.FindResource(window.ActualThemeVariant, key);
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaFact]
+    public void Fluent2KeyboardShortcutsCycleAndCloseThroughTheExistingPolicy()
+    {
+        var (window, tabs) = OpenTabs(true);
+        try
+        {
+            var items = Items(tabs);
+            var pages = Pages(tabs);
+            var editor = new TextBox { Text = "Focused page content" };
+            Assert.IsType<ContentPage>(pages[0]).Content = editor;
+            items[1].IsEnabled = false;
+            tabs.FixedHeaderCount = 1;
+            Flush(window);
+            Assert.True(editor.Focus());
+            Press(Key.F4, PhysicalKey.F4, RawInputModifiers.Control);
+            Assert.Equal(3, pages.Count);
+            Press(Key.Tab, PhysicalKey.Tab, RawInputModifiers.Control);
+            Assert.Equal(2, tabs.SelectedIndex);
+
+            Assert.True(items[2].Focus());
+            Press(Key.Tab, PhysicalKey.Tab, RawInputModifiers.Control);
+            Assert.Equal(0, tabs.SelectedIndex);
+            Assert.True(items[0].Focus());
+            Press(Key.Tab, PhysicalKey.Tab, RawInputModifiers.Control | RawInputModifiers.Shift);
+            Assert.Equal(2, tabs.SelectedIndex);
+
+            var target = tabs.SelectedPage;
+            Assert.True(items[2].Focus());
+            tabs.IsKeyboardNavigationEnabled = false;
+            Press(Key.F4, PhysicalKey.F4, RawInputModifiers.Control);
+            Assert.Equal(3, pages.Count);
+            Press(Key.Tab, PhysicalKey.Tab, RawInputModifiers.Control);
+            Assert.Equal(2, tabs.SelectedIndex);
+            tabs.IsKeyboardNavigationEnabled = true;
+            Assert.True(items[2].Focus());
+            tabs.ShowDefaultCloseButton = false;
+            Flush(window);
+            Press(Key.F4, PhysicalKey.F4, RawInputModifiers.Control);
+            Assert.Equal(3, pages.Count);
+            tabs.ShowDefaultCloseButton = true;
+            var closing = 0;
+            tabs.TabClosing += (_, args) => { args.Cancel = ++closing == 1; };
+            Press(Key.F4, PhysicalKey.F4, RawInputModifiers.Control);
+            Assert.Equal(3, pages.Count);
+            Press(Key.F4, PhysicalKey.F4, RawInputModifiers.Control);
+            Assert.Equal(2, closing);
+            Assert.Equal(2, pages.Count);
+            Assert.DoesNotContain(target, pages);
+
+            void Press(Key key, PhysicalKey physicalKey, RawInputModifiers modifiers)
+            {
+                window.KeyPress(key, modifiers, physicalKey, null);
+                window.KeyRelease(key, modifiers, physicalKey, null);
+                Flush(window);
+            }
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaFact]
+    public void Fluent2MiddleClickRequiresPressAndReleaseOnTheSameTab()
+    {
+        var (window, tabs) = OpenTabs(true);
+        try
+        {
+            var items = Items(tabs);
+            var pages = Pages(tabs);
+            var selected = tabs.SelectedPage;
+            var target = pages[1];
+            var targetPoint = items[1].TranslatePoint(new Point(24, 16), window)!.Value;
+            var neighborPoint = items[2].TranslatePoint(new Point(24, 16), window)!.Value;
+
+            window.MouseMove(targetPoint);
+            window.MouseDown(targetPoint, MouseButton.Middle);
+            window.MouseMove(neighborPoint, RawInputModifiers.MiddleMouseButton);
+            window.MouseUp(neighborPoint, MouseButton.Middle);
+            Flush(window);
+            Assert.Equal(3, pages.Count);
+
+            window.MouseMove(targetPoint);
+            window.MouseDown(targetPoint, MouseButton.Middle);
+            window.MouseUp(targetPoint, MouseButton.Middle);
+            Flush(window);
+            Assert.Equal(2, pages.Count);
+            Assert.DoesNotContain(target, pages);
+            Assert.Same(selected, tabs.SelectedPage);
         }
         finally { window.Close(); }
     }
