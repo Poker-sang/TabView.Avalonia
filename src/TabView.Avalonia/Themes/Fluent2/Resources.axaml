@@ -6,8 +6,8 @@
          Resolve the Fluent 2 tokens per variant so palette changes remain live. -->
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Default">
-            <StaticResource x:Key="TabsViewFluent2StripBackground" ResourceKey="SolidBackgroundFillColorBaseBrush" />
-            <StaticResource x:Key="TabsViewFluent2ContentBackground" ResourceKey="SolidBackgroundFillColorTertiaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2StripBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemBackgroundSelected" ResourceKey="SolidBackgroundFillColorTertiaryBrush" />
             <StaticResource x:Key="TabsViewFluent2ItemBackground" ResourceKey="LayerOnMicaBaseAltFillColorTransparentBrush" />
             <StaticResource x:Key="TabsViewFluent2ItemBackgroundPointerOver" ResourceKey="LayerOnMicaBaseAltFillColorSecondaryBrush" />
             <StaticResource x:Key="TabsViewFluent2ItemBackgroundPressed" ResourceKey="LayerOnMicaBaseAltFillColorDefaultBrush" />
@@ -24,8 +24,8 @@
             <StaticResource x:Key="TabsViewFluent2FocusBrush" ResourceKey="FocusStrokeColorOuterBrush" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
-            <StaticResource x:Key="TabsViewFluent2StripBackground" ResourceKey="SolidBackgroundFillColorBaseBrush" />
-            <StaticResource x:Key="TabsViewFluent2ContentBackground" ResourceKey="SolidBackgroundFillColorTertiaryBrush" />
+            <StaticResource x:Key="TabsViewFluent2StripBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="TabsViewFluent2ItemBackgroundSelected" ResourceKey="SolidBackgroundFillColorTertiaryBrush" />
             <StaticResource x:Key="TabsViewFluent2ItemBackground" ResourceKey="LayerOnMicaBaseAltFillColorTransparentBrush" />
             <StaticResource x:Key="TabsViewFluent2ItemBackgroundPointerOver" ResourceKey="LayerOnMicaBaseAltFillColorSecondaryBrush" />
             <StaticResource x:Key="TabsViewFluent2ItemBackgroundPressed" ResourceKey="LayerOnMicaBaseAltFillColorDefaultBrush" />

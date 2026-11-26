@@ -25,13 +25,10 @@ internal sealed class TabsViewItemChrome : Control
     public static readonly StyledProperty<double> FootRadiusProperty =
         AvaloniaProperty.Register<TabsViewItemChrome, double>(nameof(FootRadius), 4);
 
-    public static readonly StyledProperty<double> ContentOverlapProperty =
-        AvaloniaProperty.Register<TabsViewItemChrome, double>(nameof(ContentOverlap), 1);
-
     static TabsViewItemChrome()
     {
         AffectsRender<TabsViewItemChrome>(BackgroundProperty, BorderBrushProperty, BorderThicknessProperty,
-            CornerRadiusProperty, FootRadiusProperty, ContentOverlapProperty);
+            CornerRadiusProperty, FootRadiusProperty);
     }
 
     public TabsViewItemChrome() => UpdateMargin();
@@ -66,20 +63,14 @@ internal sealed class TabsViewItemChrome : Control
         set => SetValue(FootRadiusProperty, value);
     }
 
-    public double ContentOverlap
-    {
-        get => GetValue(ContentOverlapProperty);
-        set => SetValue(ContentOverlapProperty, value);
-    }
-
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-        if (change.Property == FootRadiusProperty || change.Property == ContentOverlapProperty)
+        if (change.Property == FootRadiusProperty)
             UpdateMargin();
     }
 
-    private void UpdateMargin() => Margin = new Thickness(-FootRadius, 0, -FootRadius, -ContentOverlap);
+    private void UpdateMargin() => Margin = new Thickness(-FootRadius, 0, -FootRadius, 0);
 
     public override void Render(DrawingContext context)
     {
@@ -88,29 +79,29 @@ internal sealed class TabsViewItemChrome : Control
         if (width <= 0 || height <= 0)
             return;
 
-        var join = Math.Clamp(height - ContentOverlap, 0, height);
-        var foot = Math.Clamp(FootRadius, 0, Math.Min(width / 2, join));
         var stroke = Math.Max(0, BorderThickness.Top);
         var inset = stroke / 2;
-        var maxRadius = Math.Max(0, Math.Min((width - 2 * foot) / 2, join - foot));
-        var left = Math.Max(0, Math.Clamp(CornerRadius.TopLeft, 0, maxRadius) - inset);
-        var right = Math.Max(0, Math.Clamp(CornerRadius.TopRight, 0, maxRadius) - inset);
-        var arcSize = new Size(foot + inset, foot + inset);
+        var foot = Math.Clamp(FootRadius + inset, 0, Math.Min(width / 2, height));
+        var maxRadius = Math.Max(0, Math.Min((width - 2 * foot) / 2, height - foot - inset));
+        var left = Math.Clamp(CornerRadius.TopLeft - inset, 0, maxRadius);
+        var right = Math.Clamp(CornerRadius.TopRight - inset, 0, maxRadius);
+        var arcSize = new Size(foot, foot);
         var geometry = new StreamGeometry();
         using (var path = geometry.Open())
         {
-            // Keep the feet at the content join; the overlap only seals the fill below it.
-            path.BeginFigure(new Point(0, join + inset), true);
-            path.ArcTo(new Point(foot + inset, join - foot), arcSize, 0, false, SweepDirection.CounterClockwise);
-            path.LineTo(new Point(foot + inset, inset + left));
-            path.ArcTo(new Point(foot + inset + left, inset), new Size(left, left), 0, false, SweepDirection.Clockwise);
-            path.LineTo(new Point(width - foot - inset - right, inset));
-            path.ArcTo(new Point(width - foot - inset, inset + right), new Size(right, right), 0, false, SweepDirection.Clockwise);
-            path.LineTo(new Point(width - foot - inset, join - foot));
-            path.ArcTo(new Point(width, join + inset), arcSize, 0, false, SweepDirection.CounterClockwise);
+            path.BeginFigure(new Point(0, height), true);
+            path.ArcTo(new Point(foot, height - foot), arcSize, 0, false, SweepDirection.CounterClockwise);
+            path.LineTo(new Point(foot, inset + left));
+            path.ArcTo(new Point(foot + left, inset), new Size(left, left), 0, false, SweepDirection.Clockwise);
+            path.LineTo(new Point(width - foot - right, inset));
+            path.ArcTo(new Point(width - foot, inset + right), new Size(right, right), 0, false, SweepDirection.Clockwise);
+            path.LineTo(new Point(width - foot, height - foot));
+            path.ArcTo(new Point(width, height), arcSize, 0, false, SweepDirection.CounterClockwise);
             // Fill closes implicitly. Leaving the stroke open avoids a content divider.
             path.EndFigure(false);
         }
-        context.DrawGeometry(Background, stroke > 0 ? new Pen(BorderBrush, stroke) : null, geometry);
+        // Clip the stroke at the join so it never overdraws a translucent content layer.
+        using (context.PushClip(new Rect(Bounds.Size)))
+            context.DrawGeometry(Background, stroke > 0 ? new Pen(BorderBrush, stroke) : null, geometry);
     }
 }

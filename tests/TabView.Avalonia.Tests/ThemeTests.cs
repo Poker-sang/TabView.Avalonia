@@ -9,6 +9,7 @@ using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
@@ -123,7 +124,65 @@ public class ThemeTests
     [InlineData(1.25, true)]
     [InlineData(1.5, true)]
     [InlineData(2, true)]
-    public void Fluent2HasNoPixelSeamBetweenSelectedTabAndContent(double scale, bool dark)
+    public void Fluent2SharedContentBrushHasNoGapOrDoubleBlend(double scale, bool dark)
+    {
+        var (window, tabs) = OpenTabs(true);
+        try
+        {
+            window.RequestedThemeVariant = dark ? ThemeVariant.Dark : ThemeVariant.Light;
+            window.SetRenderScaling(scale);
+            tabs.RightHeaderContent = new Border { Height = 49 };
+            tabs.SelectedIndex = 1;
+            Flush(window);
+            var selected = tabs.SelectedTabItem!;
+            var selectedOrigin = selected.TranslatePoint(default, tabs)!.Value;
+            var content = tabs.GetVisualDescendants().OfType<Panel>().Single(c => c.Name == "PART_ContentRoot");
+            var contentOrigin = content.TranslatePoint(default, tabs)!.Value;
+            Assert.Equal(contentOrigin.Y, selectedOrigin.Y + selected.Bounds.Height, 6);
+
+            var pixel = Marshal.AllocHGlobal(4);
+            try
+            {
+                var translucent = Assert.IsAssignableFrom<ISolidColorBrush>(
+                    tabs.FindResource(window.ActualThemeVariant, "LayerOnMicaBaseAltFillColorDefaultBrush"));
+                foreach (var brush in new[] { Brushes.Coral, translucent })
+                {
+                    tabs.Resources["TabsViewFluent2ContentBackground"] = brush;
+                    Flush(window);
+                    Assert.Same(brush, selected.Background);
+                    Assert.Same(brush, content.Background);
+                    using var bitmap = new RenderTargetBitmap(
+                        new PixelSize((int)Math.Ceiling(tabs.Bounds.Width * scale), (int)Math.Ceiling(tabs.Bounds.Height * scale)),
+                        new Vector(96 * scale, 96 * scale));
+                    bitmap.Render(tabs);
+
+                    var joinY = (int)Math.Round(contentOrigin.Y * scale);
+                    foreach (var x in new[] { selectedOrigin.X + 16, selectedOrigin.X + selected.Bounds.Width / 2,
+                                 selectedOrigin.X + selected.Bounds.Width - 16 })
+                    {
+                        var column = (int)Math.Round(x * scale);
+                        var expected = ReadPixel(column, joinY + 2);
+                        Assert.Equal(brush.Color.A, (byte)(expected >> 24));
+                        for (var y = joinY - 2; y <= joinY + 1; y++)
+                            Assert.Equal(expected, ReadPixel(column, y));
+                    }
+
+                    int ReadPixel(int x, int y)
+                    {
+                        bitmap.CopyPixels(new PixelRect(x, y, 1, 1), pixel, 4, 4);
+                        return Marshal.ReadInt32(pixel);
+                    }
+                }
+            }
+            finally { Marshal.FreeHGlobal(pixel); }
+        }
+        finally { window.Close(); }
+    }
+
+    [AvaloniaTheory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Fluent2LeavesTheBackdropVisibleAndUsesWinUiStateBrushes(bool dark)
     {
         var (window, tabs) = OpenTabs(true);
         try
@@ -131,32 +190,86 @@ public class ThemeTests
             window.RequestedThemeVariant = dark ? ThemeVariant.Dark : ThemeVariant.Light;
             Flush(window);
             var selected = tabs.SelectedTabItem!;
-            var selectedOrigin = selected.TranslatePoint(default, tabs)!.Value;
-            var content = tabs.GetVisualDescendants().OfType<Panel>()
-                .Single(panel => panel.Name == "PART_ContentRoot");
-            var contentOrigin = content.TranslatePoint(default, tabs)!.Value;
-            var expected = Assert.IsAssignableFrom<ISolidColorBrush>(content.Background).Color;
-            using var bitmap = new RenderTargetBitmap(
-                new PixelSize((int)Math.Ceiling(tabs.Bounds.Width * scale), (int)Math.Ceiling(tabs.Bounds.Height * scale)),
-                new Vector(96 * scale, 96 * scale));
-            bitmap.Render(tabs);
-            var pixel = Marshal.AllocHGlobal(4);
-            try
+            var inactive = Items(tabs)[1];
+            var content = tabs.GetVisualDescendants().OfType<Panel>().Single(c => c.Name == "PART_ContentRoot");
+            Assert.Equal(0, Assert.IsAssignableFrom<ISolidColorBrush>(tabs.Background).Color.A);
+            Assert.Null(content.Background);
+            Assert.Same(Brush("SolidBackgroundFillColorTertiaryBrush"), selected.Background);
+            Assert.Same(Brush("LayerOnMicaBaseAltFillColorTransparentBrush"), inactive.Background);
+
+            var size = new PixelSize((int)tabs.Bounds.Width, (int)tabs.Bounds.Height);
+            using (var bitmap = new RenderTargetBitmap(size))
             {
-                foreach (var x in new[] { selectedOrigin.X + 16, selectedOrigin.X + selected.Bounds.Width / 2,
-                             selectedOrigin.X + selected.Bounds.Width - 16 })
+                bitmap.Render(tabs);
+                var pixel = Marshal.AllocHGlobal(4);
+                try
                 {
-                    var joinY = (int)Math.Round(contentOrigin.Y * scale);
-                    for (var y = joinY - 2; y <= joinY + 2; y++)
+                    foreach (var y in new[] { 20, size.Height / 2 })
                     {
-                        bitmap.CopyPixels(new PixelRect((int)Math.Round(x * scale), y, 1, 1), pixel, 4, 4);
-                        var bytes = new byte[4];
-                        Marshal.Copy(pixel, bytes, 0, bytes.Length);
-                        Assert.Equal(new[] { expected.B, expected.G, expected.R, expected.A }, bytes);
+                        bitmap.CopyPixels(new PixelRect(size.Width - 10, y, 1, 1), pixel, 4, 4);
+                        Assert.Equal(0, Marshal.ReadByte(pixel, 3));
                     }
                 }
+                finally { Marshal.FreeHGlobal(pixel); }
             }
-            finally { Marshal.FreeHGlobal(pixel); }
+
+            window.MouseMove(inactive.TranslatePoint(new Point(24, 16), window)!.Value);
+            Flush(window);
+            Assert.Same(Brush("LayerOnMicaBaseAltFillColorSecondaryBrush"), inactive.Background);
+            Assert.Same(Brush("TextFillColorSecondaryBrush"), inactive.Foreground);
+
+            // The drag thumb selects on mouse down, so exercise the unselected pressed style directly.
+            var inactiveStates = (IPseudoClasses)inactive.Classes;
+            inactiveStates.Set(":pressed", true);
+            Flush(window);
+            Assert.Same(Brush("LayerOnMicaBaseAltFillColorDefaultBrush"), inactive.Background);
+            Assert.Same(Brush("TextFillColorTertiaryBrush"), inactive.Foreground);
+            inactiveStates.Set(":pressed", false);
+
+            var selectedBody = selected.TranslatePoint(new Point(24, 16), window)!.Value;
+            window.MouseMove(selectedBody);
+            window.MouseDown(selectedBody, MouseButton.Left);
+            Flush(window);
+            Assert.Same(Brush("SolidBackgroundFillColorTertiaryBrush"), selected.Background);
+            Assert.Same(Brush("TextFillColorPrimaryBrush"), selected.Foreground);
+            window.MouseUp(selectedBody, MouseButton.Left);
+
+            var close = CloseButton(inactive);
+            var presenter = close.GetVisualChildren().OfType<ContentPresenter>().Single();
+            presenter.Transitions = null;
+            var closeCenter = close.TranslatePoint(new Point(close.Bounds.Width / 2, close.Bounds.Height / 2), window)!.Value;
+            window.MouseMove(closeCenter);
+            Flush(window);
+            Assert.Same(Brush("SubtleFillColorSecondaryBrush"), presenter.Background);
+            Assert.Same(Brush("TextFillColorPrimaryBrush"), presenter.Foreground);
+            window.MouseDown(closeCenter, MouseButton.Left);
+            Flush(window);
+            Assert.Same(Brush("SubtleFillColorTertiaryBrush"), presenter.Background);
+            Assert.Same(Brush("TextFillColorSecondaryBrush"), presenter.Foreground);
+            window.MouseUp(closeCenter, MouseButton.Left);
+            Flush(window);
+            Assert.Equal(2, Pages(tabs).Count);
+
+            tabs.Resources["TabsViewFluent2ItemBackgroundSelected"] = Brushes.Coral;
+            Flush(window);
+            Assert.Same(Brushes.Coral, selected.Background);
+            Assert.Null(content.Background);
+
+            var appResources = Application.Current!.Resources;
+            const string sharedBackground = "TabsViewFluent2ContentBackground";
+            appResources.Add(sharedBackground, Brushes.SkyBlue);
+            try
+            {
+                Flush(window);
+                Assert.Same(Brushes.SkyBlue, selected.Background);
+                Assert.Same(Brushes.SkyBlue, content.Background);
+            }
+            finally { appResources.Remove(sharedBackground); }
+            Flush(window);
+            Assert.Same(Brushes.Coral, selected.Background);
+            Assert.Null(content.Background);
+
+            object? Brush(string key) => tabs.FindResource(window.ActualThemeVariant, key);
         }
         finally { window.Close(); }
     }

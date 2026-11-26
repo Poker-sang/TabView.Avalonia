@@ -67,12 +67,23 @@ and follow the current theme variant. Tab buttons inherit Fluent 2's `DefaultBut
 with defaults for corner radius, animation duration and tab label size supplied by Fluent 2.
 The tab strip currently uses the control's
 horizontal layout and shrinks tabs to fit, as in the original theme.
-The selected tab joins the content surface without WinUI's horizontal divider.
+By default the strip and page content let the window background or Mica show
+through. The selected tab uses `SolidBackgroundFillColorTertiaryBrush`, which
+can be overridden with `TabsViewFluent2ItemBackgroundSelected`.
+Set `TabsViewFluent2ContentBackground` to a brush to paint the selected tab and
+the content as one continuous layer. This override takes precedence over
+`TabsViewFluent2ItemBackgroundSelected` and accepts translucent brushes.
+For the WinUI Gallery Mica Alt appearance, alias it to
+`LayerOnMicaBaseAltFillColorDefaultBrush` in the light and dark dictionaries.
+Set `TabsViewFluent2StripBackground` to `SolidBackgroundFillColorBaseBrush` and
+`TabsViewFluent2ContentBackground` to `SolidBackgroundFillColorTertiaryBrush`
+to reproduce the opaque backgrounds used in 2.0.0.
 Add and close actions use vector paths with one-DIP strokes and no dependency on
 system icon fonts or FluentIcons. `TabsViewFluent2ButtonGlyphSize` sets the plus size;
 `TabsViewFluent2CloseButtonGlyphSize` gives the diagonal close mark a smaller optical size.
 The plus uses integer path edges for crisp strokes at 100%.
-Pixel regression tests cover the join in light/dark mode at 100%, 125%, 150% and 200%.
+Pixel regression tests cover the join for opaque and translucent fills in light
+and dark mode at 100%, 125%, 150% and 200%.
 Run all checks with `dotnet test TabView.Avalonia.slnx`.
 
 The Material 3 theme is isolated in `src/TabView.Avalonia.Material3/`, with its own

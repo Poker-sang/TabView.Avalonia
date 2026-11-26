@@ -113,18 +113,25 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
             <Setter Property="TextWrapping" Value="NoWrap" />
         </Style>
-        <Style Selector="^:pointerover">
+        <Style Selector="^:pointerover:not(:selected)">
             <Setter Property="Background" Value="{DynamicResource TabsViewFluent2ItemBackgroundPointerOver}" />
         </Style>
-        <Style Selector="^:pressed">
+        <Style Selector="^:pressed:not(:selected)">
             <Setter Property="Background" Value="{DynamicResource TabsViewFluent2ItemBackgroundPressed}" />
             <Setter Property="Foreground" Value="{DynamicResource TabsViewFluent2ItemForegroundPressed}" />
         </Style>
         <Style Selector="^:separator-hidden /template/ Border#PART_Separator">
             <Setter Property="IsVisible" Value="False" />
         </Style>
+        <Style Selector="^:selected, ^[IsDragging=true]">
+            <Setter Property="Background">
+                <MultiBinding Converter="{x:Static local:Fluent2TabBackground.SelectBrush}">
+                    <DynamicResource ResourceKey="TabsViewFluent2ContentBackground" />
+                    <DynamicResource ResourceKey="TabsViewFluent2ItemBackgroundSelected" />
+                </MultiBinding>
+            </Setter>
+        </Style>
         <Style Selector="^:selected">
-            <Setter Property="Background" Value="{DynamicResource TabsViewFluent2ContentBackground}" />
             <Setter Property="Foreground" Value="{DynamicResource TabsViewFluent2ItemForegroundSelected}" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="BorderBrush" Value="{DynamicResource TabsViewFluent2BorderBrush}" />
@@ -137,18 +144,14 @@
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
         </Style>
-        <Style Selector="^[IsDragging=true]">
-            <Setter Property="Background" Value="{DynamicResource TabsViewFluent2ContentBackground}" />
-        </Style>
         <Style Selector="^[IsDragging=true] /template/ Border#PART_LayoutRoot">
             <Setter Property="BoxShadow" Value="0 2 8 0 #20000000" />
         </Style>
-        <Style Selector="^:disabled">
+        <Style Selector="^:disabled:not(:selected)">
             <Setter Property="Background" Value="{DynamicResource TabsViewFluent2ItemBackground}" />
-            <Setter Property="Foreground" Value="{DynamicResource TabsViewFluent2ItemForegroundDisabled}" />
         </Style>
-        <Style Selector="^:selected:disabled">
-            <Setter Property="Background" Value="{DynamicResource TabsViewFluent2ContentBackground}" />
+        <Style Selector="^:disabled">
+            <Setter Property="Foreground" Value="{DynamicResource TabsViewFluent2ItemForegroundDisabled}" />
         </Style>
         <Style Selector="^:disabled /template/ Viewbox#PART_IconBox">
             <Setter Property="Opacity" Value="0.4" />

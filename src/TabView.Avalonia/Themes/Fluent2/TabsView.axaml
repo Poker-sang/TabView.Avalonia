@@ -21,7 +21,10 @@
                                 Name="PART_LeftHeaderContent"
                                 Background="Transparent"
                                 Content="{Binding Owner.LeftHeaderContent, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <ItemsPresenter Name="PART_ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}" />
+                            <ItemsPresenter
+                                Name="PART_ItemsPresenter"
+                                ItemsPanel="{TemplateBinding ItemsPanel}"
+                                VerticalAlignment="Bottom" />
                             <Button
                                 Name="PART_AddItemButton"
                                 Command="{Binding Owner.AddItemCommand, RelativeSource={RelativeSource TemplatedParent}}"
@@ -64,6 +67,7 @@
 
     <ControlTheme x:Key="{x:Type local:TabsView}" TargetType="local:TabsView">
         <Setter Property="Background" Value="{DynamicResource TabsViewFluent2StripBackground}" />
+        <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="Padding" Value="{DynamicResource TabsViewFluent2HeaderPadding}" />
         <Setter Property="AdjacentHeaderItemOffset" Value="0" />
         <Setter Property="TabItemWidth" Value="{DynamicResource TabsViewFluent2ItemWidth}" />
